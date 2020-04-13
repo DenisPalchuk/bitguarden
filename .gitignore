@@ -5,3 +5,4 @@ debian/com.github.liljebergxyz.valawarden.substvars
 debian/com.github.liljebergxyz.valawarden/
 debian/debhelper-build-stamp
 debian/files
+.vscode/*
