@@ -16,76 +16,42 @@
  */
 
 using App.Configs;
-using App.Widgets;
 
-namespace App.Views {
 
     /**
      * The {@code AppView} class.
      *
      * @since 1.0.0
      */
-    public class AppView : Gtk.Box {
+public class App.Views.AppView : Gtk.Box {
 
-        private Gtk.Paned main_panel;
-        private Gtk.Paned child_panel;
-        private Sidebar sidebar;
+    
 
-        private Gtk.Grid grid;
-        private Gtk.Entry password_entry;
-        private Gtk.Button login_button;
-        private Json.Object ? sync_data;
-
-        /**
-         * Constructs a new {@code AppView} object.
-         */
-        public AppView () {
-            main_panel = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
-            child_panel = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
-            sidebar = new Sidebar ();
-
-            main_panel.pack1 (sidebar, false, false);
-            main_panel.pack2 (child_panel, true, false);
-            child_panel.pack1 (CipherList.get_instance (), false, false);
-            child_panel.pack2 (CipherPage.get_instance (), true, false);
-            main_panel.position = (150);
-
-            if (App.Bitwarden.get_instance ().encryption_key == null) {
-                password_entry = new Gtk.Entry ();
-                password_entry.set_visibility (false);
-                login_button = new Gtk.Button.with_label (_ ("Unlock"));
-                login_button.halign = Gtk.Align.CENTER;
-                login_button.clicked.connect (on_login_clicked);
-
-                grid = new Gtk.Grid ();
-                grid.column_spacing = 12;
-                grid.row_spacing = 6;
-                grid.hexpand = true;
-                grid.halign = Gtk.Align.CENTER;
-                grid.attach (new AlignedLabel (_ ("Password:")), 0, 0);
-                grid.attach (password_entry, 1, 0);
-                grid.attach (login_button, 1, 1);
-                this.set_center_widget (grid);
-            } else {
-                this.add (main_panel);
-            }
-
-            test();
+    /**
+     * Constructs a new {@code AppView} object.
+     */
+    public AppView () {
+        if (App.Bitwarden.get_instance ().encryption_key == null) {
+            this.show_quick_login();
+        } else {
+            this.show_vault();
         }
+    }
 
-        private async void test () {
-            var bitwarden = App.Bitwarden.get_instance ();
-            //yield bitwarden.download_icon ("github.com");
-        }
+    private void show_quick_login() {
+        var quick_welcome = new App.Views.QuickLoginView();
+        this.add (quick_welcome);
+        
+        quick_welcome.successful_vault_decrypt.connect(() => {
+            this.remove(quick_welcome);
+            this.show_vault();
+        });
+    }
 
-        private async void on_login_clicked () {
-            var bitwarden = App.Bitwarden.get_instance ();
-            if (yield bitwarden.unlock (password_entry.text)) {
-                this.remove (grid);
-                this.add (main_panel);
-                sidebar.setup_folders ();
-                main_panel.show_all ();
-            }
-        }
+    private void show_vault() {
+        var vault_view = new App.Views.VaultView(Gtk.Orientation.HORIZONTAL);
+        debug("changing layout triggered");
+        this.add (vault_view);
+        this.show_all ();
     }
 }

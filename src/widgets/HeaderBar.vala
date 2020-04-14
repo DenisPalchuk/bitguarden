@@ -31,6 +31,8 @@ namespace App.Widgets {
 
         public Gtk.MenuButton menu_button { get; private set; }
 
+        public Gtk.Entry search_entry { get; private set; }
+
         /**
          * Constructs a new {@code HeaderBar} object.
          *
@@ -47,9 +49,15 @@ namespace App.Widgets {
                 menu_clicked ();
             });
 
+            search_entry = new Gtk.SearchEntry ();
+            search_entry.set_text("Input text for search there...");
+
             this.set_title ("Valawarden");
             this.show_close_button = true;
             this.pack_end (menu_button);
+            this.pack_end(search_entry);
+
+
         }
     }
 }

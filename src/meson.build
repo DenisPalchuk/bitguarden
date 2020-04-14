@@ -12,6 +12,8 @@ sources += files(
     'models/Cipher.vala',
 
     'views/AppView.vala',
+    'views/QuickView.vala',
+    'views/VaultView.vala',
 
     'utils/NetworkUtils.vala',
     'utils/Crypto.vala',
