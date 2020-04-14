@@ -15,19 +15,16 @@
 </p>-->
 
 <p align="center">
-  <a href="https://github.com/DenisPalchuk/valawarden/blob/master/LICENSE">
+  <a href="https://github.com/DenisPalchuk/bitguarden/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg">
   </a>
-  <a href="https://github.com/DenisPalchuk/valawarden/releases">
+  <a href="https://github.com/DenisPalchuk/bitguarden/releases">
     <img src="https://img.shields.io/badge/Release-v%200.1.0-orange.svg">
   </a>
-  <!-- <a href="https://travis-ci.com/LiljebergXYZ/valawarden">
-    <img src="https://travis-ci.com/LiljebergXYZ/valawarden.svg?branch=develop" alt="Build Status">
-  </a> -->
 </p>
 
   <br />
-  <a href="https://github.com/DenisPalchuk/valawarden/issues/new"> Report a problem! </a>
+  <a href="https://github.com/DenisPalchuk/bitguarden/issues/new"> Report a problem! </a>
 </p>
 
 ## Installation
@@ -50,7 +47,7 @@ Use the App script to simplify installation by running `./app install-deps`
  ### Building
 
 ```
-git clone https://github.com/DenisPalchuk/valawarden.git com.github.denispalchuk.bitguarden && cd com.github.denispalchuk.bitguarden
+git clone https://github.com/DenisPalchuk/bitguarden.git com.github.denispalchuk.bitguarden && cd com.github.denispalchuk.bitguarden
 ./app install-deps && ./app install
 ```
 
@@ -62,7 +59,7 @@ git clone https://github.com/DenisPalchuk/valawarden.git com.github.denispalchuk
 
 ### Development & Testing
 
-Valawarden includes a script to simplify the development process. This script can be accessed in the main project directory through `./app`.
+Bitguarden includes a script to simplify the development process. This script can be accessed in the main project directory through `./app`.
 
 ```
 Usage:
@@ -82,7 +79,7 @@ Options:
 
 ### Contributing
 
-To help look at the available [Issues](https://github.com/DenisPalchuk/valawarden/issues). While some a labled "help wanted" you may pick anything to help out with so long as you notify me with a comment on the issue.
+To help look at the available [Issues](https://github.com/DenisPalchuk/bitguarden/issues). While some a labled "help wanted" you may pick anything to help out with so long as you notify me with a comment on the issue.
 
 
 ### License

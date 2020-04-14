@@ -7,7 +7,7 @@ namespace App {
     public class Vault {
         private const int TOTP_TFA_ID = 0;
         private Soup.Session session;
-        private string valawarden_dir;
+        private string bitguarden_dir;
         private string sync_data_file = "sync-data.json";
         public uint8[] encryption_key;
 
@@ -15,8 +15,8 @@ namespace App {
             session = new Soup.Session ();
             session.user_agent = "%s/%s".printf (Constants.BITWARDEN_USER_AGENT, Constants.VERSION);
 
-            valawarden_dir = GLib.Environment.get_user_data_dir () + "/valawarden/";
-            DirUtils.create_with_parents (valawarden_dir, 0766);
+            bitguarden_dir = GLib.Environment.get_user_data_dir () + "/bitguarden/";
+            DirUtils.create_with_parents (bitguarden_dir, 0766);
         }
 
         public ErrorObject login (string email, string password, int ? two_factor_provider = null, string ? two_factor_token = null, bool two_factor_remember = true) {
@@ -93,7 +93,7 @@ namespace App {
 
         public async bool unlock (string password) {
             var parser = new Json.Parser ();
-            File file = File.new_for_path (valawarden_dir + sync_data_file);
+            File file = File.new_for_path (bitguarden_dir + sync_data_file);
             FileInputStream stream = yield file.read_async ();
 
             yield parser.load_from_stream_async (stream);
@@ -139,14 +139,14 @@ namespace App {
             var parser = make_request (message);
 
             settings.last_sync = current_time.to_unix ();
-            FileUtils.set_contents (valawarden_dir + sync_data_file, Json.to_string (parser.get_root (), false));
+            FileUtils.set_contents (bitguarden_dir + sync_data_file, Json.to_string (parser.get_root (), false));
 
             return parser.get_root ().get_object ();
         }
 
         public Json.Object ? get_sync_data () {
             var parser = new Json.Parser ();
-            parser.load_from_file (valawarden_dir + sync_data_file);
+            parser.load_from_file (bitguarden_dir + sync_data_file);
 
             return parser.get_root ().get_object ();
         }
@@ -287,8 +287,8 @@ namespace App {
         public async uint8[] ? download_icon (string url) {
             var icon_url = Constants.BITWARDEN_ICONS_URL + "/" + url + "/icon.png";
 
-            stdout.printf ("Looking for: %s\n", valawarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
-            var icon_file = File.new_for_path (valawarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
+            stdout.printf ("Looking for: %s\n", bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
+            var icon_file = File.new_for_path (bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
             if (icon_file.query_exists ()) {
                 string etag;
                 var icon = yield icon_file.load_bytes_async (null, out etag);

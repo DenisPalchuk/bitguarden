@@ -9,7 +9,7 @@ endforeach
 
 install_data(
     join_paths('images', meson.project_name() + '.svg'),
-    install_dir: join_paths(get_option('datadir'), 'Valawarden', 'images')
+    install_dir: join_paths(get_option('datadir'), 'Bitguarden', 'images')
 )
 
 install_data(

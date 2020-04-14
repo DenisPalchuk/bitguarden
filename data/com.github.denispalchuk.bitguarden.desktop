@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Valawarden
+Name=Bitguarden
 Comment=Unofficial bitwarden client
 Icon=com.github.denispalchuk.bitguarden
 Exec=com.github.denispalchuk.bitguarden

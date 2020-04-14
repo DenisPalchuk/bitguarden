@@ -1,5 +1,5 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: Valawarden
+Upstream-Name: Bitguarden
 Source: {{ repo-url }}
 
 Files: *

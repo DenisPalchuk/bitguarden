@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
 
-    <schema id="com.github.denispalchuk.bitguarden" path="/com/github/liljebergxyz/valawarden/">
+    <schema id="com.github.denispalchuk.bitguarden" path="/com/github/denispalchuk/bitguarden/">
         <key name="window-x" type="i">
             <default>-1</default>
             <summary>Most recent x position of Bitwarden</summary>

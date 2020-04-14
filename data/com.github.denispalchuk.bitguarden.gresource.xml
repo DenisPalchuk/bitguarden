@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
 
-    <gresource prefix="/com/github/liljebergxyz/valawarden/css">
+    <gresource prefix="/com/github/denispalchuk/bitguarden/css">
         <file alias="style.css" compressed="true">css/style.css</file>
     </gresource>
 
-    <gresource prefix="/com/github/liljebergxyz/valawarden/images">
+    <gresource prefix="/com/github/denispalchuk/bitguarden/images">
         <file alias="logo" compressed="true" preprocess="xml-stripblanks">images/com.github.denispalchuk.bitguarden.svg</file>
         <file alias="logo16" compressed="true" preprocess="xml-stripblanks">images/icons/16/com.github.denispalchuk.bitguarden.svg</file>
         <file alias="logo24" compressed="true" preprocess="xml-stripblanks">images/icons/24/com.github.denispalchuk.bitguarden.svg</file>

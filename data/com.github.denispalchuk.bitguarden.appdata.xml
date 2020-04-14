@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 Daniel Liljeberg <liljebergxyz@protonmail.com> -->
 <component type="desktop-application">
-    <id>com.github.liljebergxyz.valawarden</id>
+    <id>com.github.denispalchuk.bitguarden</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0</project_license>
-    <name>Valawarden</name>
+    <name>Bitguarden</name>
     <summary>Unofficial bitwarden client</summary>
     <developer_name>Daniel Liljeberg</developer_name>
     <provides>
-        <binary>com.github.liljebergxyz.valawarden</binary>
+        <binary>com.github.denispalchuk.bitguarden</binary>
     </provides>
     <screenshots>
         <screenshot type="default">

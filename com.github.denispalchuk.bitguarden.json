@@ -58,7 +58,7 @@
             ]
         },
         {
-            "name" : "Valawarden",
+            "name" : "Bitguarden",
             "buildsystem" : "meson",
             "config-opts" : [
                 "--libdir=lib"

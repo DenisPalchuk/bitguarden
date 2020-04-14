@@ -52,12 +52,10 @@ namespace App.Widgets {
             search_entry = new Gtk.SearchEntry ();
             search_entry.set_text("Input text for search there...");
 
-            this.set_title ("Valawarden");
+            this.set_title ("Bitguarden");
             this.show_close_button = true;
             this.pack_end (menu_button);
             this.pack_end(search_entry);
-
-
         }
     }
 }

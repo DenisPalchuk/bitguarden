@@ -32,7 +32,7 @@ namespace App.Dialogs {
             main_window = window;
             this.app_view = app_view;
 
-            logo = new Image.from_resource ("/com/github/liljebergxyz/valawarden/images/logo128");
+            logo = new Image.from_resource ("/com/github/denispalchuk/bitguarden/images/logo128");
             logo.halign = Gtk.Align.CENTER;
             logo.hexpand = true;
             logo.margin_bottom = 24;

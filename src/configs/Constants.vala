@@ -38,7 +38,7 @@ namespace App.Configs {
         public abstract const string TRANSLATE_URL = "{{ repo-url }}";
         public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE = "Website";
         public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE_URL = "https://liljeberg.xyz";
-        public abstract const string URL_CSS = "/com/github/liljebergxyz/valawarden/css/style.css";
+        public abstract const string URL_CSS = "/com/github/denispalchuk/bitguarden/css/style.css";
         public abstract const string[] ABOUT_AUTHORS = { "Denis Palchuk <palchukdenis@protonmail.com>" };
         public abstract const Gtk.License ABOUT_LICENSE_TYPE = Gtk.License.GPL_3_0;
         public abstract const string BITWARDEN_USER_AGENT = "Bitguarden";
