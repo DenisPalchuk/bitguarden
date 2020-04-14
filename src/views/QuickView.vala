@@ -27,7 +27,7 @@ class App.Views.QuickLoginView : Gtk.Grid {
     }
 
     private async void on_login_clicked () {
-        var bitwarden = App.Bitwarden.get_instance ();
+        var bitwarden = App.Vault.get_instance ();
         if (yield bitwarden.unlock (password_entry.text)) {
             successful_vault_decrypt();
         }

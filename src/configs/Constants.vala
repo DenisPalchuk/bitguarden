@@ -27,7 +27,7 @@ namespace App.Configs {
 
         public abstract const string ID = "com.github.denispalchuk.bitguarden";
         public abstract const string VERSION = "0.1.0";
-        public abstract const string PROGRAME_NAME = "Valawarden";
+        public abstract const string PROGRAME_NAME = "Bitguarden";
         public abstract const string APP_YEARS = "2018";
         public abstract const string APP_ICON = "com.github.denispalchuk.bitguarden";
         public abstract const string ABOUT_COMMENTS = "Unofficial native bitwarden client for elementary OS";
@@ -39,9 +39,9 @@ namespace App.Configs {
         public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE = "Website";
         public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE_URL = "https://liljeberg.xyz";
         public abstract const string URL_CSS = "/com/github/liljebergxyz/valawarden/css/style.css";
-        public abstract const string[] ABOUT_AUTHORS = { "Daniel Liljeberg <liljebergxyz@protonmail.com>" };
+        public abstract const string[] ABOUT_AUTHORS = { "Denis Palchuk <palchukdenis@protonmail.com>" };
         public abstract const Gtk.License ABOUT_LICENSE_TYPE = Gtk.License.GPL_3_0;
-        public abstract const string BITWARDEN_USER_AGENT = "Valawarden";
+        public abstract const string BITWARDEN_USER_AGENT = "Bitguarden";
         public abstract const string BITWARDEN_BASE_URL = "https://api.bitwarden.com";
         public abstract const string BITWARDEN_IDENTITY_URL = "https://identity.bitwarden.com";
         public abstract const string BITWARDEN_ICONS_URL = "https://icons.bitwarden.com";

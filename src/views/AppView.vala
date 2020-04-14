@@ -31,7 +31,7 @@ public class App.Views.AppView : Gtk.Box {
      * Constructs a new {@code AppView} object.
      */
     public AppView () {
-        if (App.Bitwarden.get_instance ().encryption_key == null) {
+        if (App.Vault.get_instance ().encryption_key == null) {
             this.show_quick_login();
         } else {
             this.show_vault();

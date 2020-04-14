@@ -31,7 +31,7 @@ sources += files(
     'widgets/CircularProgressBar.vala',
 
     'models/Totp.vala',
-    'models/Bitwarden.vala',
+    'models/Vault.vala',
     'models/LibUUID.vala',
     'Application.vala',
     'Main.vala',

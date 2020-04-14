@@ -4,14 +4,14 @@ using App.Utils;
 using GCrypt;
 
 namespace App {
-    public class Bitwarden {
+    public class Vault {
         private const int TOTP_TFA_ID = 0;
         private Soup.Session session;
         private string valawarden_dir;
         private string sync_data_file = "sync-data.json";
         public uint8[] encryption_key;
 
-        public Bitwarden () {
+        public Vault () {
             session = new Soup.Session ();
             session.user_agent = "%s/%s".printf (Constants.BITWARDEN_USER_AGENT, Constants.VERSION);
 
@@ -308,11 +308,11 @@ namespace App {
             return data;
         }
 
-        private static Bitwarden ? instance;
+        private static Vault ? instance;
 
-        public static unowned Bitwarden get_instance () {
+        public static unowned Vault get_instance () {
             if (instance == null) {
-                instance = new Bitwarden ();
+                instance = new Vault ();
             }
 
             return instance;

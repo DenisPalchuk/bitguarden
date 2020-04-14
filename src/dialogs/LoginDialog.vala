@@ -91,7 +91,7 @@ namespace App.Dialogs {
             string email = email_entry.text;
             string password = password_entry.text;
 
-            var bitwarden = App.Bitwarden.get_instance ();
+            var bitwarden = App.Vault.get_instance ();
             App.Models.ErrorObject result;
             if (two_factor_entry.text != "") {
                 result = bitwarden.login (email, password, 0, two_factor_entry.text);
@@ -115,7 +115,7 @@ namespace App.Dialogs {
                 }
                 stdout.printf ("%s\n".printf (result.error));
             } else {
-                App.Bitwarden.get_instance ().sync ();
+                App.Vault.get_instance ().sync ();
                 error_label.hide ();
                 main_window.show_all ();
                 app_view.activate ();

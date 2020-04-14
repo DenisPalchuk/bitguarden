@@ -39,16 +39,7 @@ entry.entry-name {
     box-shadow: none;
 }
 
-entry.entry-name:selected,
-entry.entry-name:hover,
-entry.entry-name:active,
-entry.entry-name:focus {
-    background-color: #FFFFFF;
-}
-
 grid.entry-grid {
-    border: 1px solid darkgray;
-    background-color: #fff;
     border-radius: 10px;
     padding: 10px;
 }
