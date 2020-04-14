@@ -1,8 +1,8 @@
 build/*
 debian/build/*
-debian/com.github.liljebergxyz.valawarden.debhelper.log
-debian/com.github.liljebergxyz.valawarden.substvars
-debian/com.github.liljebergxyz.valawarden/
+debian/com.github.denispalchuk.bitguarden.debhelper.log
+debian/com.github.denispalchuk.bitguarden.substvars
+debian/com.github.denispalchuk.bitguarden/
 debian/debhelper-build-stamp
 debian/files
 .vscode/*

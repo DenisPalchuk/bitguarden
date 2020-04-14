@@ -32,7 +32,7 @@ function test {
     initialize
 
     export DISPLAY=:0
-    ./com.github.liljebergxyz.valawarden --run-tests
+    ./com.github.denispalchuk.bitguarden --run-tests
     result=$?
 
     export DISPLAY=":0.0"
@@ -53,8 +53,8 @@ case $1 in
 "generate-i18n")
     initialize
     find . -type f -name "*.vala" -mtime 0 | sed "s/\.\///g" > ./po/POTFILES
-    ninja com.github.liljebergxyz.valawarden-pot
-    ninja com.github.liljebergxyz.valawarden-update-po
+    ninja com.github.denispalchuk.bitguarden-pot
+    ninja com.github.denispalchuk.bitguarden-update-po
     ;;
 "install")
     initialize
@@ -78,14 +78,14 @@ case $1 in
     ;;
 "run")
     initialize
-    ./com.github.liljebergxyz.valawarden "${@:2}"
+    ./com.github.denispalchuk.bitguarden "${@:2}"
     ;;
 "test")
     test
     ;;
 "test-run")
     test
-    ./com.github.liljebergxyz.valawarden "${@:2}"
+    ./com.github.denispalchuk.bitguarden "${@:2}"
     ;;
 "beautify")
     uncrustify -c uncrustify.cfg --no-backup --replace src/**/*.vala

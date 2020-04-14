@@ -1,37 +1,33 @@
 <p align="center">
 <i>(This project is not associated with the <a href="https://bitwarden.com/" title="Bitwarden">Bitwarden</a> project nor 8bit Solutions LLC.)</i>
 </p>
-
-![Logo](data/images/logotype.png)
-_Logo Artwork By [@richardbmx](https://github.com/richardbmx)_
-
 <div align="center">
-  <h1 align="center">Valawarden</h1>
+  <h1 align="center">Bitguarden</h1>
   <h3 align="center">Unofficial native bitwarden client for elementary OS</h3>
 </div>
 
 <br/>
 
 <!--<p align="center">
-    <a href="https://appcenter.elementary.io/com.github.liljebergxyz.valawarden">
+    <a href="https://appcenter.elementary.io/com.github.denispalchuk.bitguarden">
         <img src="https://appcenter.elementary.io/badge.svg">
     </a>
 </p>-->
 
 <p align="center">
-  <a href="https://github.com/liljebergxyz/valawarden/blob/master/LICENSE">
+  <a href="https://github.com/DenisPalchuk/valawarden/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg">
   </a>
-  <a href="https://github.com/liljebergxyz/valawarden/releases">
+  <a href="https://github.com/DenisPalchuk/valawarden/releases">
     <img src="https://img.shields.io/badge/Release-v%200.1.0-orange.svg">
   </a>
-  <a href="https://travis-ci.com/LiljebergXYZ/valawarden">
+  <!-- <a href="https://travis-ci.com/LiljebergXYZ/valawarden">
     <img src="https://travis-ci.com/LiljebergXYZ/valawarden.svg?branch=develop" alt="Build Status">
-  </a>
+  </a> -->
 </p>
 
   <br />
-  <a href="https://github.com/liljebergxyz/valawarden/issues/new"> Report a problem! </a>
+  <a href="https://github.com/DenisPalchuk/valawarden/issues/new"> Report a problem! </a>
 </p>
 
 ## Installation
@@ -54,7 +50,7 @@ Use the App script to simplify installation by running `./app install-deps`
  ### Building
 
 ```
-git clone https://github.com/liljebergxyz/valawarden.git com.github.liljebergxyz.valawarden && cd com.github.liljebergxyz.valawarden
+git clone https://github.com/DenisPalchuk/valawarden.git com.github.denispalchuk.bitguarden && cd com.github.denispalchuk.bitguarden
 ./app install-deps && ./app install
 ```
 
@@ -86,7 +82,7 @@ Options:
 
 ### Contributing
 
-To help look at the available [Issues](https://github.com/LiljebergXYZ/valawarden/issues). While some a labled "help wanted" you may pick anything to help out with so long as you notify me with a comment on the issue.
+To help look at the available [Issues](https://github.com/DenisPalchuk/valawarden/issues). While some a labled "help wanted" you may pick anything to help out with so long as you notify me with a comment on the issue.
 
 
 ### License

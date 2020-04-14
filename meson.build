@@ -1,4 +1,4 @@
-project('com.github.liljebergxyz.valawarden', ['vala', 'c'],
+project('com.github.denispalchuk.bitguarden', ['vala', 'c'],
     version : '1.0.0',
     license: 'GPL-3.0'
 )
@@ -17,7 +17,7 @@ is_darwin = (host_machine.system() == 'darwin')
 
 
 gresource = gnome.compile_resources(
-    'as-resources', 'data/com.github.liljebergxyz.valawarden.gresource.xml',
+    'as-resources', 'data/com.github.denispalchuk.bitguarden.gresource.xml',
     source_dir: 'data',
     c_name: 'as'
 )
@@ -65,7 +65,7 @@ if is_darwin
 	dependencies += dependency('gee-0.8')
 endif
 
-e = executable('com.github.liljebergxyz.valawarden',
+e = executable('com.github.denispalchuk.bitguarden',
     sources,
     gresource,
     c_args: c_args,

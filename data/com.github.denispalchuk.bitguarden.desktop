@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Valawarden
 Comment=Unofficial bitwarden client
-Icon=com.github.liljebergxyz.valawarden
-Exec=com.github.liljebergxyz.valawarden
+Icon=com.github.denispalchuk.bitguarden
+Exec=com.github.denispalchuk.bitguarden
 Terminal=false
 Type=Application
 StartupNotify=true

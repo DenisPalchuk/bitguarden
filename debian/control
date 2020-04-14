@@ -1,4 +1,4 @@
-Source: com.github.liljebergxyz.valawarden
+Source: com.github.denispalchuk.bitguarden
 Section: x11
 Priority: extra
 Maintainer: Daniel Liljeberg <liljebergxyz@protonmail.com>
@@ -13,7 +13,7 @@ Build-Depends: meson,
                libgcrypt20-dev
 
 Standards-Version: 3.9.3
-Package: com.github.liljebergxyz.valawarden
+Package: com.github.denispalchuk.bitguarden
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Unofficial bitwarden client

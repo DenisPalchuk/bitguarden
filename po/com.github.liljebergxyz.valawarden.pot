@@ -1,12 +1,12 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the com.github.liljebergxyz.valawarden package.
+# This file is distributed under the same license as the com.github.denispalchuk.bitguarden package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: com.github.liljebergxyz.valawarden\n"
+"Project-Id-Version: com.github.denispalchuk.bitguarden\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-28 13:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"

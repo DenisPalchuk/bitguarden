@@ -31,5 +31,5 @@ install:
 
 script:
   - houston ci
-    --name-domain com.github.liljebergxyz.valawarden
+    --name-domain com.github.denispalchuk.bitguarden
     --distribution $DIST

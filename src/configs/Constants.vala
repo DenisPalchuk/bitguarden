@@ -25,11 +25,11 @@ namespace App.Configs {
      */
     public class Constants {
 
-        public abstract const string ID = "com.github.liljebergxyz.valawarden";
+        public abstract const string ID = "com.github.denispalchuk.bitguarden";
         public abstract const string VERSION = "0.1.0";
         public abstract const string PROGRAME_NAME = "Valawarden";
         public abstract const string APP_YEARS = "2018";
-        public abstract const string APP_ICON = "com.github.liljebergxyz.valawarden";
+        public abstract const string APP_ICON = "com.github.denispalchuk.bitguarden";
         public abstract const string ABOUT_COMMENTS = "Unofficial native bitwarden client for elementary OS";
         public abstract const string TRANSLATOR_CREDITS = "Translators";
         public abstract const string MAIN_URL = "https://liljeberg.xyz";
