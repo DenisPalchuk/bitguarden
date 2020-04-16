@@ -46,7 +46,7 @@ namespace App {
 
             var settings = App.Configs.Settings.get_instance ();
             if (settings.device_identifier == "") {
-                settings.device_identifier = LibUUID.uuid_generate ();
+                settings.device_identifier = GLib.Uuid.string_random();
             }
             int x = settings.window_x;
             int y = settings.window_y;

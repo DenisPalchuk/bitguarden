@@ -32,7 +32,6 @@ sources += files(
 
     'models/Totp.vala',
     'models/Vault.vala',
-    'models/LibUUID.vala',
     'Application.vala',
     'Main.vala',
     'Window.vala'

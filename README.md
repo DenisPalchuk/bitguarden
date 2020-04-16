@@ -38,7 +38,6 @@ These dependencies must be present before building:
 - `libgtk-3-dev`
 - `libsoup2.4-dev`
 - `libjson-glib-dev`
-- `uuid-dev`
 - `libgcrypt20-dev`
 
 

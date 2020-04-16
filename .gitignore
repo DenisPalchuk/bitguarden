@@ -6,3 +6,4 @@ debian/com.github.denispalchuk.bitguarden/
 debian/debhelper-build-stamp
 debian/files
 .vscode/*
+*~
