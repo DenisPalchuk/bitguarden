@@ -262,6 +262,51 @@ namespace App {
             return Crypto.add_terminating_zero (Crypto.remove_padding (out_buffer));
         }
 
+        public void sync_folders_with_store () {
+            var sync_data = this.sync ();
+            var folders_obj = sync_data.get_array_member ("Folders");
+            parse_folders (folders_obj);
+            var ciphers = sync_data.get_array_member ("Ciphers");
+            parse_ciphers (ciphers);
+        }
+
+        private void parse_folders (Json.Array ? folders_obj) {
+            var vault_service = App.VaultService.get_instance ();
+            folders_obj.foreach_element ((array, index, node) => {
+                var object = node.get_object ();
+                var folder = new Folder ();
+                folder.id = object.get_string_member ("Id");
+                folder.name = (string) (vault_service.decrypt_string (object.get_string_member ("Name"), vault_service.encryption_key));
+                App.Store.get_instance ().folders.set(folder.id, folder);
+            });
+
+            
+        }
+
+        private void parse_ciphers (Json.Array ? ciphers) {
+            var vault_service = App.VaultService.get_instance ();
+            ciphers.foreach_element ((array, index, node) => {
+                var object = node.get_object ();
+                var login = object.get_object_member ("Login");
+
+                var cipher = new App.Models.Cipher ();
+                cipher.name = (string) (vault_service.decrypt_string (object.get_string_member ("Name"), vault_service.encryption_key));
+                cipher.username = (string) (vault_service.decrypt_string (login.get_string_member ("Username"), vault_service.encryption_key));
+                cipher.password = (string) (vault_service.decrypt_string (login.get_string_member ("Password"), vault_service.encryption_key));
+                cipher.uri = (string) (vault_service.decrypt_string (login.get_string_member ("Uri"), vault_service.encryption_key));
+                string totp;
+                if ((totp = login.get_string_member ("Totp")) != null) {
+                    cipher.totp = (string) (vault_service.decrypt_string (totp, vault_service.encryption_key));
+                }
+
+                var folderId = object.get_string_member ("FolderId");
+                var folder = App.Store.get_instance ().folders.get (folderId);
+                if (folder != null) {
+                    folder.add_cipher (cipher);
+                }
+            });
+        }
+
         
 
         
