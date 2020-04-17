@@ -4,45 +4,28 @@ using App.Utils;
 using GCrypt;
 
 namespace App {
-    public class Vault {
+    public class VaultService {
+
+        public signal void vault_unlocked();
+        
+        private App.SDK.BitwardenSDK bitwardenSDK;
         private const int TOTP_TFA_ID = 0;
-        private Soup.Session session;
         private string bitguarden_dir;
         private string sync_data_file = "sync-data.json";
         public uint8[] encryption_key;
 
-        public Vault () {
-            session = new Soup.Session ();
-            session.user_agent = "%s/%s".printf (Constants.BITWARDEN_USER_AGENT, Constants.VERSION);
+        public VaultService () {
+            this.bitwardenSDK = new App.SDK.BitwardenSDK (); 
 
             bitguarden_dir = GLib.Environment.get_user_data_dir () + "/bitguarden/";
             DirUtils.create_with_parents (bitguarden_dir, 0766);
         }
 
-        public ErrorObject login (string email, string password, int ? two_factor_provider = null, string ? two_factor_token = null, bool two_factor_remember = true) {
-            var url = "%s/connect/token".printf (Constants.BITWARDEN_IDENTITY_URL);
-            HashTable<string, string> form_data = new HashTable<string, string>(str_hash, str_equal);
-            var settings = App.Configs.Settings.get_instance ();
-            form_data.insert ("grant_type", "password");
-            form_data.insert ("username", email);
-            form_data.insert ("password", hash_password (password, email));
-            form_data.insert ("scope", "api offline_access");
-            form_data.insert ("client_id", Constants.BITWARDEN_CLIENT_ID);
-            form_data.insert ("deviceType", "3");
-            form_data.insert ("deviceIdentifier", settings.device_identifier);
-            form_data.insert ("deviceName", "firefox");
-            form_data.insert ("devicePushToken", "");
-            if (two_factor_provider != null && two_factor_token != null) {
-                form_data.insert ("twoFactorProvider", two_factor_provider.to_string ());
-                form_data.insert ("twoFactorToken", two_factor_token);
-                form_data.insert ("twoFactorRemember", two_factor_remember.to_string ());
-            }
+        public ErrorObject login(string email, string password, int ? two_factor_provider = null, string ? two_factor_token = null, bool two_factor_remember = true) {
+            var node = this.bitwardenSDK.login(email, hash_password (password, email), two_factor_provider,two_factor_token, two_factor_remember);
 
-            Soup.Message message = Soup.Form.request_new_from_hash ("POST", url, form_data);
+            var root_object = node.get_object();
 
-            var parser = make_request (message);
-
-            var root_object = parser.get_root ().get_object ();
             ErrorObject error_object = check_login_response (root_object);
             if (error_object.error != null) {
                 return error_object;
@@ -52,7 +35,7 @@ namespace App {
                 && root_object.has_member ("refresh_token")
                 && root_object.has_member ("expires_in")
                 ) {
-                parse_token (root_object);
+                    parse_and_update_tokens (root_object);
             }
 
             if (root_object.has_member ("Key")) {
@@ -97,7 +80,7 @@ namespace App {
             FileInputStream stream = yield file.read_async ();
 
             yield parser.load_from_stream_async (stream);
-
+            
             var root_object = parser.get_root ().get_object ();
             if (!root_object.has_member ("Profile")) {
                 return false;
@@ -110,63 +93,47 @@ namespace App {
             var email = profile.get_string_member ("Email");
             try {
                 encryption_key = decrypted_key (key, email, password);
-                return true;
-            } catch (GLib.Error e) {
+                var store = App.Store.get_instance ();
+                store.encryption_key = encryption_key;
+                store.is_vault_unlocked = true;
+                debug("value changed");
+            } catch (GLib.Error _) {
                 return false;
             }
-
-            return false;
+            return true;
         }
 
         public Json.Object ? sync () {
             if (!NetworkUtils.check_internet_connectivity ()) {
-                return get_sync_data ();
+                return this.get_local_data_backup ();
             }
             var settings = App.Configs.Settings.get_instance ();
             var expiry_time = new DateTime.from_unix_utc (settings.expiry_time);
             var current_time = new DateTime.now_utc ();
             if (current_time.compare (expiry_time) >= 0) {
-                refresh_token ();
+                var new_token_obj = this.bitwardenSDK.refresh_token_obj ();
+                this.parse_and_update_tokens(new_token_obj);
             }
 
-            var url = "%s/sync".printf (Constants.BITWARDEN_BASE_URL);
-            Soup.Message message = new Soup.Message ("GET", url);
-            var access_token = settings.access_token;
-            if (access_token != null) {
-                message.request_headers.append ("Authorization", "Bearer %s".printf (access_token));
-            }
-
-            var parser = make_request (message);
-
-            settings.last_sync = current_time.to_unix ();
-            FileUtils.set_contents (bitguarden_dir + sync_data_file, Json.to_string (parser.get_root (), false));
-
-            return parser.get_root ().get_object ();
+            
+            var root_node = this.bitwardenSDK.get_vault_data(settings.access_token);
+            this.backup_data_locally(settings, root_node, current_time);
+            return root_node.get_object ();
         }
 
-        public Json.Object ? get_sync_data () {
+        public void backup_data_locally (App.Configs.Settings settings, Json.Node root_node, DateTime current_time) {
+            FileUtils.set_contents (bitguarden_dir + sync_data_file, Json.to_string (root_node, false));
+            settings.last_sync = current_time.to_unix ();
+        }
+
+        public Json.Object ? get_local_data_backup () {
             var parser = new Json.Parser ();
             parser.load_from_file (bitguarden_dir + sync_data_file);
 
             return parser.get_root ().get_object ();
         }
 
-        private void refresh_token () {
-            var url = "%s/connect/token".printf (Constants.BITWARDEN_IDENTITY_URL);
-            HashTable<string, string> form_data = new HashTable<string, string>(str_hash, str_equal);
-            var settings = App.Configs.Settings.get_instance ();
-            form_data.insert ("grant_type", "refresh_token");
-            form_data.insert ("client_id", Constants.BITWARDEN_CLIENT_ID);
-            form_data.insert ("refresh_token", settings.refresh_token);
-
-            Soup.Message message = Soup.Form.request_new_from_hash ("POST", url, form_data);
-
-            var parser = make_request (message);
-            var root_object = parser.get_root ().get_object ();
-            parse_token (root_object);
-        }
-
-        private void parse_token (Json.Object object) {
+        private void parse_and_update_tokens (Json.Object object) {
             var settings = App.Configs.Settings.get_instance ();
             var access_token = object.get_string_member ("access_token");
             var refresh_token = object.get_string_member ("refresh_token");
@@ -177,6 +144,31 @@ namespace App {
             expiry_time.add_seconds (expires_in);
             settings.expiry_time = expiry_time.to_unix ();
         }
+
+        // TODO: return it later
+        //  public async uint8[] ? download_icon (string url) {
+        //      var icon_url = Constants.BITWARDEN_ICONS_URL + "/" + url + "/icon.png";
+
+        //      stdout.printf ("Looking for: %s\n", bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
+        //      var icon_file = File.new_for_path (bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
+        //      if (icon_file.query_exists ()) {
+        //          string etag;
+        //          var icon = yield icon_file.load_bytes_async (null, out etag);
+
+        //          // Check if icon is newer than 7 days
+        //          if (((GLib.get_real_time () / 1000000) - int64.parse (etag.split (":")[0])) / 1440000 < 7) {
+        //              return icon.get_data ();
+        //          }
+        //      }
+
+        //      var message = new Soup.Message ("GET", icon_url);
+        //      var stream = yield session.send_async (message);
+        //      var data = yield Utils.IO.input_stream_to_array(stream);
+
+        //      yield icon_file.replace_contents_async(data, null, false, FileCreateFlags.NONE, null, null);
+
+        //      return data;
+        //  }
 
         private uint8[] decrypted_key (string encrypted_key, string email, string password) {
             var key = make_key (password.data, email.down ().data, 5000);
@@ -270,49 +262,15 @@ namespace App {
             return Crypto.add_terminating_zero (Crypto.remove_padding (out_buffer));
         }
 
-        private Json.Parser make_request (Soup.Message message) {
-            session.send_message (message);
+        
 
-            var parser = new Json.Parser ();
+        
 
-            try {
-                parser.load_from_data ((string) message.response_body.data, -1);
-            } catch (GLib.Error e) {
-                stderr.printf ("I think something went wrong!\n");
-            }
+        private static VaultService ? instance;
 
-            return parser;
-        }
-
-        public async uint8[] ? download_icon (string url) {
-            var icon_url = Constants.BITWARDEN_ICONS_URL + "/" + url + "/icon.png";
-
-            stdout.printf ("Looking for: %s\n", bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
-            var icon_file = File.new_for_path (bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
-            if (icon_file.query_exists ()) {
-                string etag;
-                var icon = yield icon_file.load_bytes_async (null, out etag);
-
-                // Check if icon is newer than 7 days
-                if (((GLib.get_real_time () / 1000000) - int64.parse (etag.split (":")[0])) / 1440000 < 7) {
-                    return icon.get_data ();
-                }
-            }
-
-            var message = new Soup.Message ("GET", icon_url);
-            var stream = yield session.send_async (message);
-            var data = yield Utils.IO.input_stream_to_array(stream);
-
-            yield icon_file.replace_contents_async(data, null, false, FileCreateFlags.NONE, null, null);
-
-            return data;
-        }
-
-        private static Vault ? instance;
-
-        public static unowned Vault get_instance () {
+        public static unowned VaultService get_instance () {
             if (instance == null) {
-                instance = new Vault ();
+                instance = new VaultService ();
             }
 
             return instance;

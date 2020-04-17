@@ -10,6 +10,7 @@ sources += files(
     'models/Folder.vala',
     'models/FolderCollection.vala',
     'models/Cipher.vala',
+    'models/Store.vala',
 
     'views/AppView.vala',
     'views/QuickView.vala',
@@ -32,6 +33,8 @@ sources += files(
 
     'models/Totp.vala',
     'models/Vault.vala',
+
+    'sdks/BitwardenSDK.vala',
     'Application.vala',
     'Main.vala',
     'Window.vala'

@@ -16,7 +16,7 @@ namespace App.Widgets {
         private OTPPanel otp_panel;
         private Gtk.Grid entry_grid;
 
-        private CipherPage () {
+        public CipherPage () {
             build_ui ();
         }
 
@@ -101,16 +101,6 @@ namespace App.Widgets {
             } else {
                 otp_panel.hide ();
             }
-        }
-
-        private static CipherPage ? instance;
-
-        public static unowned CipherPage get_instance () {
-            if (instance == null) {
-                instance = new CipherPage ();
-            }
-
-            return instance;
         }
     }
 }

@@ -91,13 +91,15 @@ namespace App.Dialogs {
             string email = email_entry.text;
             string password = password_entry.text;
 
-            var bitwarden = App.Vault.get_instance ();
+            var vault_service = App.VaultService.get_instance ();
             App.Models.ErrorObject result;
+
             if (two_factor_entry.text != "") {
-                result = bitwarden.login (email, password, 0, two_factor_entry.text);
+                result = vault_service.login (email, password, 0, two_factor_entry.text);
             } else {
-                result = bitwarden.login (email, password);
+                result = vault_service.login (email, password);
             }
+            
             if (result.error != null) {
                 error_label.label = _ (result.error_description);
                 switch (result.error) {
@@ -114,13 +116,14 @@ namespace App.Dialogs {
                     break;
                 }
                 stdout.printf ("%s\n".printf (result.error));
-            } else {
-                App.Vault.get_instance ().sync ();
-                error_label.hide ();
-                main_window.show_all ();
-                app_view.activate ();
-                destroy ();
+                return;
             }
+            
+            vault_service.sync ();
+            error_label.hide ();
+            main_window.show_all ();
+            app_view.activate ();
+            destroy ();
         }
 
         public static void open (Gtk.Window window, App.Views.AppView app_view) {
