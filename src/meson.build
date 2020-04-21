@@ -32,9 +32,11 @@ sources += files(
     'widgets/CircularProgressBar.vala',
 
     'models/Totp.vala',
-    'models/Vault.vala',
 
     'sdks/BitwardenSDK.vala',
+
+    'services/VaultService.vala',
+    
     'Application.vala',
     'Main.vala',
     'Window.vala'
