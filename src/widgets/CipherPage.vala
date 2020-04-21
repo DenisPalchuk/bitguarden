@@ -9,7 +9,6 @@ namespace App.Widgets {
         private Gtk.Box notes_panel;
 
         private CipherHeader cipher_header;
-        private AlignedLabel name_label;
         private EntryWithLabel username_entry;
         private EntryWithLabel password_entry;
         private EntryWithLabel totp_entry;
@@ -78,7 +77,6 @@ namespace App.Widgets {
 
             user_grid.attach (cipher_header, 0, 0, 1, 1);
             user_grid.attach (entry_grid, 0, 1, 1, 1);
-            entry_grid.attach (name_label, 1, 0, 1, 1);
             entry_grid.attach (username_entry, 0, 2, 1, 1);
             // TODO: Insert folder here
             entry_grid.attach (password_entry, 1, 2, 1, 1);

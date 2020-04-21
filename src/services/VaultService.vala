@@ -271,12 +271,11 @@ namespace App {
         }
 
         private void parse_folders (Json.Array ? folders_obj) {
-            var vault_service = App.VaultService.get_instance ();
             folders_obj.foreach_element ((array, index, node) => {
                 var object = node.get_object ();
                 var folder = new Folder ();
                 folder.id = object.get_string_member ("Id");
-                folder.name = (string) (vault_service.decrypt_string (object.get_string_member ("Name"), vault_service.encryption_key));
+                folder.name = (string) (this.decrypt_string (object.get_string_member ("Name"), this.encryption_key));
                 App.Store.get_instance ().folders.set(folder.id, folder);
             });
 
@@ -284,19 +283,18 @@ namespace App {
         }
 
         private void parse_ciphers (Json.Array ? ciphers) {
-            var vault_service = App.VaultService.get_instance ();
             ciphers.foreach_element ((array, index, node) => {
                 var object = node.get_object ();
                 var login = object.get_object_member ("Login");
 
                 var cipher = new App.Models.Cipher ();
-                cipher.name = (string) (vault_service.decrypt_string (object.get_string_member ("Name"), vault_service.encryption_key));
-                cipher.username = (string) (vault_service.decrypt_string (login.get_string_member ("Username"), vault_service.encryption_key));
-                cipher.password = (string) (vault_service.decrypt_string (login.get_string_member ("Password"), vault_service.encryption_key));
-                cipher.uri = (string) (vault_service.decrypt_string (login.get_string_member ("Uri"), vault_service.encryption_key));
-                string totp;
-                if ((totp = login.get_string_member ("Totp")) != null) {
-                    cipher.totp = (string) (vault_service.decrypt_string (totp, vault_service.encryption_key));
+                
+                cipher.name = this.get_decrypt_value_from_object(object, "Name");
+                cipher.username = this.get_decrypt_value_from_object(login, "Username");
+                cipher.password = this.get_decrypt_value_from_object(login, "Password");
+                cipher.uri = this.get_decrypt_value_from_object(login, "Uri");
+                if (login != null && login.has_member ("Totp")) {
+                    cipher.totp = this.get_decrypt_value_from_object(login, "Totp");
                 }
 
                 var folderId = object.get_string_member ("FolderId");
@@ -305,6 +303,19 @@ namespace App {
                     folder.add_cipher (cipher);
                 }
             });
+        }
+
+        private string get_decrypt_value_from_object (Json.Object object, string key) {
+            if (!object.has_member (key)) {
+                return null;
+            }
+
+            var encrypted_value = object.get_string_member (key);
+
+            if (encrypted_value == null) {
+                return null;
+            }
+            return (string)(this.decrypt_string(encrypted_value, this.encryption_key));
         }
 
         
