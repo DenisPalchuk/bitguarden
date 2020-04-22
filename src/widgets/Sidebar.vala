@@ -16,7 +16,7 @@ namespace App.Widgets {
 
             root.add (folders_parent);
             init_folders_list();
-            App.Store.get_instance ().folders.notify["size"].connect(init_folders_list);
+            App.State.get_instance ().folders.notify["size"].connect(init_folders_list);
             
         }
 
@@ -26,7 +26,7 @@ namespace App.Widgets {
             all_items.remove_all_ciphers ();
             folders_parent.add (all_items);
 
-            foreach (Folder folder in App.Store.get_instance ().folders.values) {
+            foreach (Folder folder in App.State.get_instance ().folders.values) {
                 folders_parent.add (folder);
                 all_items.add_all(folder.get_ciphers());
             }

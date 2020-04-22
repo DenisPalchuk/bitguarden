@@ -10,7 +10,7 @@ sources += files(
     'models/Folder.vala',
     'models/FolderCollection.vala',
     'models/Cipher.vala',
-    'models/Store.vala',
+    'models/State.vala',
 
     'views/AppView.vala',
     'views/QuickView.vala',

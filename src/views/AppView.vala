@@ -32,8 +32,8 @@ public class App.Views.AppView : Gtk.Box {
      */
     public AppView () {
         this.show_quick_login();
-        App.Store.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
-                if (((Store)obj).is_vault_unlocked == true) {
+        App.State.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
+                if (((State)obj).is_vault_unlocked == true) {
                     this.remove (currentWidget);
                     this.show_vault();
                 }

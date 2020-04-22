@@ -27,6 +27,9 @@ class App.Views.VaultView: Gtk.Paned {
         sidebar.item_selected.connect ((item) => {
             this.initialize_chipher_list_by_folder((Folder) item, cipher_list);
         });
+        App.State.get_instance ().notify["search-text"].connect((obj, val) => {
+            cipher_list.filter_by_string(((App.State)(obj)).search_text);
+        });
 
         this.pack1 (sidebar, false, false);
         this.pack2 (child_panel, true, false);

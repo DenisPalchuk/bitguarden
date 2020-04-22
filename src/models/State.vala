@@ -2,13 +2,15 @@ using Gee;
 using App.Models;
 
 namespace App { 
-    class Store: GLib.Object {
+    class State: GLib.Object {
         public bool is_vault_unlocked { get; set; default = false; }
 
         public uint8[] encryption_key { get; set; }
         public HashMap<string ? , Folder> folders;
+
+        public string search_text { get; set; default = ""; }
     
-        public Store() {
+        public State() {
             folders = new HashMap<string ? , Folder>();
             var folder = new Folder ();
             folder.id = "Without folder";
@@ -18,11 +20,11 @@ namespace App {
 
 
     
-        private static Store ? instance;
+        private static State ? instance;
     
-        public static unowned Store get_instance () {
+        public static unowned State get_instance () {
             if (instance == null) {
-                instance = new Store ();
+                instance = new State ();
             }
     
             return instance;

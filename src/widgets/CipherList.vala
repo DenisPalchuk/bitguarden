@@ -24,15 +24,7 @@ namespace App.Widgets {
             listbox.vexpand = true;
             listbox.activate_on_single_click = false;
             listbox.set_size_request (200, 100);
-            // TODO: Filter
-            //  HeaderBar.get_instance ().search_entry.search_changed.connect((user_data) => {
-            //      listbox.set_filter_func( (row) => {
-            //          debug(user_data.get_text());
-            //          debug(row.get_children().to_string());
-            //          return ((AlignedLabel)row.get_children().nth_data(2)).label.contains(user_data.get_text());
-            //      });
-            //  });
-            // listbox.set_filter_func
+            
 
             scroll_box.set_size_request (200, 100);
             scroll_box.add (listbox);
@@ -42,6 +34,29 @@ namespace App.Widgets {
 
         public void load_ciphers (ArrayList<Cipher> ciphers) {
             _ciphers = ciphers;
+            this.load_all_ciphers ();
+        }
+
+        public void filter_by_string(string search_text) {
+            if (search_text == "") {
+                this.load_all_ciphers ();
+                return;
+            }
+
+            clear_listbox();
+            foreach (var cipher in _ciphers) {
+                if (cipher.name.contains (search_text) || 
+                    // TODO: uncomment it later when will add URI entry to cipher page
+                    //  cipher.uri.contains (search_text) ||
+                    cipher.username.contains (search_text)
+                ) {
+                    var row = new CipherItem (cipher);
+                    listbox.add (row);
+                }
+            }
+        }
+
+        public void load_all_ciphers() {
             clear_listbox ();
             foreach (Cipher cipher in _ciphers) {
                 var row = new CipherItem (cipher);

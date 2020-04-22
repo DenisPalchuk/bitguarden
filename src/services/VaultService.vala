@@ -93,7 +93,7 @@ namespace App {
             var email = profile.get_string_member ("Email");
             try {
                 encryption_key = decrypted_key (key, email, password);
-                var store = App.Store.get_instance ();
+                var store = App.State.get_instance ();
                 store.encryption_key = encryption_key;
                 store.is_vault_unlocked = true;
             } catch (GLib.Error _) {
@@ -275,7 +275,7 @@ namespace App {
                 var folder = new Folder ();
                 folder.id = object.get_string_member ("Id");
                 folder.name = (string) (this.decrypt_string (object.get_string_member ("Name"), this.encryption_key));
-                App.Store.get_instance ().folders.set(folder.id, folder);
+                App.State.get_instance ().folders.set(folder.id, folder);
             });
 
             
@@ -299,11 +299,11 @@ namespace App {
                 Folder folder = null;
                 if (object.has_member("FolderId")) {
                     var folderId = object.get_string_member ("FolderId");
-                    folder = App.Store.get_instance ().folders.get (folderId);
+                    folder = App.State.get_instance ().folders.get (folderId);
                 }
                 
                 if (folder == null) {
-                    folder = App.Store.get_instance ().folders.get("Without folder");
+                    folder = App.State.get_instance ().folders.get("Without folder");
                 }
 
                 folder.add_cipher (cipher);
