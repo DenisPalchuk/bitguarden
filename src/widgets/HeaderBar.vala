@@ -48,11 +48,20 @@ namespace App.Widgets {
             });
 
             var search_entry = new Gtk.SearchEntry();
+            search_entry.set_no_show_all(true);
+            search_entry.hide();
+            
             search_entry.search_changed.connect(() => {
                 App.State.get_instance ().search_text = search_entry.get_text().chomp();
             });
 
-            
+            App.State.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
+                if (((State)obj).is_vault_unlocked == true) {
+                    search_entry.set_no_show_all (false);
+                    search_entry.show_all();
+                    search_entry.grab_focus();
+                }
+            });
 
             this.set_title ("Bitguarden");
             this.show_close_button = true;
