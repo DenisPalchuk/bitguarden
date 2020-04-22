@@ -15,6 +15,14 @@ namespace App.Models {
             return _ciphers;
         }
 
+        public ArrayList<Cipher> get_sorted_ciphers () {
+            _ciphers.sort((a,b) => {
+                return a.name.ascii_casecmp(b.name); 
+            });
+
+            return _ciphers;
+        }
+
         public void add_cipher (Cipher cipher) {
             _ciphers.add (cipher);
         }

@@ -36,7 +36,7 @@ class App.Views.VaultView: Gtk.Paned {
     private void initialize_chipher_list_by_folder (Folder item, CipherList cipher_list) {
         if (item != null && item is Folder) {
             Folder folder = (Folder) item;
-            var ciphers = folder.get_ciphers ();
+            var ciphers = folder.get_sorted_ciphers ();
             cipher_list.load_ciphers (ciphers);
             var listbox = cipher_list.listbox; 
             listbox.select_row (listbox.get_row_at_index (0));
