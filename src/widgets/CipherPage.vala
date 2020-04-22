@@ -74,6 +74,7 @@ namespace App.Widgets {
 
             otp_panel = new OTPPanel ();
             otp_panel.hide ();
+            otp_panel.set_no_show_all (true);
 
             user_grid.attach (cipher_header, 0, 0, 1, 1);
             user_grid.attach (entry_grid, 0, 1, 1, 1);
@@ -95,7 +96,8 @@ namespace App.Widgets {
             totp_entry.text = cipher.totp != null ? cipher.totp : "";
             if (cipher.totp != null) {
                 otp_panel.set_key (cipher.totp);
-                otp_panel.show ();
+                otp_panel.set_no_show_all (false);
+                otp_panel.show_all();
             } else {
                 otp_panel.hide ();
             }

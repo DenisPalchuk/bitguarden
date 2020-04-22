@@ -96,7 +96,6 @@ namespace App {
                 var store = App.Store.get_instance ();
                 store.encryption_key = encryption_key;
                 store.is_vault_unlocked = true;
-                debug("value changed");
             } catch (GLib.Error _) {
                 return false;
             }
@@ -297,11 +296,17 @@ namespace App {
                     cipher.totp = this.get_decrypt_value_from_object(login, "Totp");
                 }
 
-                var folderId = object.get_string_member ("FolderId");
-                var folder = App.Store.get_instance ().folders.get (folderId);
-                if (folder != null) {
-                    folder.add_cipher (cipher);
+                Folder folder = null;
+                if (object.has_member("FolderId")) {
+                    var folderId = object.get_string_member ("FolderId");
+                    folder = App.Store.get_instance ().folders.get (folderId);
                 }
+                
+                if (folder == null) {
+                    folder = App.Store.get_instance ().folders.get("Without folder");
+                }
+
+                folder.add_cipher (cipher);
             });
         }
 

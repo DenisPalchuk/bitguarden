@@ -11,6 +11,9 @@ namespace App {
         public Store() {
             folders = new HashMap<string ? , Folder>();
             var folder = new Folder ();
+            folder.id = "Without folder";
+            folder.name = folder.id;
+            folders.set(folder.id, folder);
         }
 
 
