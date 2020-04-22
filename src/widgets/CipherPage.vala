@@ -9,14 +9,13 @@ namespace App.Widgets {
         private Gtk.Box notes_panel;
 
         private CipherHeader cipher_header;
-        private AlignedLabel name_label;
         private EntryWithLabel username_entry;
         private EntryWithLabel password_entry;
         private EntryWithLabel totp_entry;
         private OTPPanel otp_panel;
         private Gtk.Grid entry_grid;
 
-        private CipherPage () {
+        public CipherPage () {
             build_ui ();
         }
 
@@ -75,10 +74,10 @@ namespace App.Widgets {
 
             otp_panel = new OTPPanel ();
             otp_panel.hide ();
+            otp_panel.set_no_show_all (true);
 
             user_grid.attach (cipher_header, 0, 0, 1, 1);
             user_grid.attach (entry_grid, 0, 1, 1, 1);
-            entry_grid.attach (name_label, 1, 0, 1, 1);
             entry_grid.attach (username_entry, 0, 2, 1, 1);
             // TODO: Insert folder here
             entry_grid.attach (password_entry, 1, 2, 1, 1);
@@ -97,20 +96,11 @@ namespace App.Widgets {
             totp_entry.text = cipher.totp != null ? cipher.totp : "";
             if (cipher.totp != null) {
                 otp_panel.set_key (cipher.totp);
-                otp_panel.show ();
+                otp_panel.set_no_show_all (false);
+                otp_panel.show_all();
             } else {
                 otp_panel.hide ();
             }
-        }
-
-        private static CipherPage ? instance;
-
-        public static unowned CipherPage get_instance () {
-            if (instance == null) {
-                instance = new CipherPage ();
-            }
-
-            return instance;
         }
     }
 }

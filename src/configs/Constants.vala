@@ -32,12 +32,12 @@ namespace App.Configs {
         public abstract const string APP_ICON = "com.github.denispalchuk.bitguarden";
         public abstract const string ABOUT_COMMENTS = "Unofficial native bitwarden client for elementary OS";
         public abstract const string TRANSLATOR_CREDITS = "Translators";
-        public abstract const string MAIN_URL = "https://liljeberg.xyz";
+        public abstract const string MAIN_URL = "https://denispalchuk.com";
         public abstract const string BUG_URL = "{{ repo-url }}/issues";
         public abstract const string HELP_URL = "{{ repo-url }}/wiki";
         public abstract const string TRANSLATE_URL = "{{ repo-url }}";
         public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE = "Website";
-        public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE_URL = "https://liljeberg.xyz";
+        public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE_URL = "https://denispalchuk.com";
         public abstract const string URL_CSS = "/com/github/denispalchuk/bitguarden/css/style.css";
         public abstract const string[] ABOUT_AUTHORS = { "Denis Palchuk <palchukdenis@protonmail.com>" };
         public abstract const Gtk.License ABOUT_LICENSE_TYPE = Gtk.License.GPL_3_0;

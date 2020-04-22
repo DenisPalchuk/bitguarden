@@ -19,6 +19,14 @@ namespace App.Models {
             _ciphers.add (cipher);
         }
 
+        public void remove_all_ciphers () {
+            _ciphers.clear();
+        }
+
+        public void add_all (Collection<Cipher> ciphers) {
+            _ciphers.add_all(ciphers);
+        }
+
         public bool remove_cipher (Cipher cipher) {
             return _ciphers.remove (cipher);
         }

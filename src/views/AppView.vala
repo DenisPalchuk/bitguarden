@@ -24,34 +24,32 @@ using App.Configs;
      * @since 1.0.0
      */
 public class App.Views.AppView : Gtk.Box {
-
-    
+    public Gtk.Widget currentWidget;
+        
 
     /**
      * Constructs a new {@code AppView} object.
      */
     public AppView () {
-        if (App.Vault.get_instance ().encryption_key == null) {
-            this.show_quick_login();
-        } else {
-            this.show_vault();
-        }
+        this.show_quick_login();
+        App.Store.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
+                if (((Store)obj).is_vault_unlocked == true) {
+                    this.remove (currentWidget);
+                    this.show_vault();
+                }
+        });
     }
 
     private void show_quick_login() {
         var quick_welcome = new App.Views.QuickLoginView();
         this.add (quick_welcome);
-        
-        quick_welcome.successful_vault_decrypt.connect(() => {
-            this.remove(quick_welcome);
-            this.show_vault();
-        });
+        this.currentWidget = quick_welcome;
     }
 
     private void show_vault() {
         var vault_view = new App.Views.VaultView(Gtk.Orientation.HORIZONTAL);
-        debug("changing layout triggered");
         this.add (vault_view);
+        this.currentWidget = vault_view;
         this.show_all ();
     }
 }

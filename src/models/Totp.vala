@@ -14,13 +14,10 @@ namespace App {
 
         public Totp (string key = null, GLib.ChecksumType checksum = GLib.ChecksumType.SHA1) {
             if (key != null) {
-                secret = base32_decode (key);
+                var string_secret = this.parse_secret_from_totp_url(key);
+                this.secret = this.base32_decode(string_secret);
             }
             checksumType = checksum;
-        }
-
-        public void set_key (string key) {
-            secret = base32_decode (key);
         }
 
         // https://tools.ietf.org/html/rfc6238
@@ -43,7 +40,6 @@ namespace App {
             while (result.length < digits) {
                 result = "0" + result;
             }
-
             return result;
         }
 
@@ -117,6 +113,16 @@ namespace App {
             }
 
             throw new GLib.Error.literal (Quark.from_string (""), -1, "Character is not a Base32 character.");
+        }
+
+        private static string parse_secret_from_totp_url(string key) {
+            var regex = new Regex("secret=([^&]*)");
+            var result = regex.split(key);
+            
+            if (result.length < 2) {
+                throw new GLib.Error.literal (Quark.from_string (""), -1, "Error during parsing totp secret");
+            }
+            return result[1];
         }
     }
 }
