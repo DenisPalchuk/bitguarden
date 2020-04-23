@@ -45,10 +45,10 @@ namespace App.Widgets {
 
             clear_listbox();
             foreach (var cipher in _ciphers) {
-                if (cipher.name.contains (search_text) || 
+                if (cipher.name.contains (search_text) ||
                     // TODO: uncomment it later when will add URI entry to cipher page
                     //  cipher.uri.contains (search_text) ||
-                    cipher.username.contains (search_text)
+                    cipher.username != null && cipher.username.contains (search_text)
                 ) {
                     var row = new CipherItem (cipher);
                     listbox.add (row);
@@ -59,6 +59,10 @@ namespace App.Widgets {
         public void load_all_ciphers() {
             clear_listbox ();
             foreach (Cipher cipher in _ciphers) {
+                // TODO: add cards support
+                if (cipher.cipher_type == CipherType.CARD || cipher.cipher_type == CipherType.NOTE) {
+                    continue;
+                }
                 var row = new CipherItem (cipher);
                 listbox.add (row);
             }

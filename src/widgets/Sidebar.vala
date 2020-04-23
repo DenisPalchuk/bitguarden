@@ -10,7 +10,7 @@ namespace App.Widgets {
         public Sidebar () {
             all_items = new Folder ();
             all_items.id = "all-items";
-            all_items.name = _ ("All items");
+            all_items.name = _ ("All passwords");
             folders_parent = new Granite.Widgets.SourceList.ExpandableItem (_ ("Folders"));
             folders_parent.expanded = true;
 

@@ -287,13 +287,16 @@ namespace App {
                 var login = object.get_object_member ("Login");
 
                 var cipher = new App.Models.Cipher ();
-                
+                cipher.cipher_type = CipherType.from_type(object.get_int_member("Type"));
                 cipher.name = this.get_decrypt_value_from_object(object, "Name");
-                cipher.username = this.get_decrypt_value_from_object(login, "Username");
-                cipher.password = this.get_decrypt_value_from_object(login, "Password");
-                cipher.uri = this.get_decrypt_value_from_object(login, "Uri");
-                if (login != null && login.has_member ("Totp")) {
-                    cipher.totp = this.get_decrypt_value_from_object(login, "Totp");
+                
+                if (cipher.cipher_type == CipherType.PASSWORD) {
+                    cipher.username = this.get_decrypt_value_from_object(login, "Username");
+                    cipher.password = this.get_decrypt_value_from_object(login, "Password");
+                    cipher.uri = this.get_decrypt_value_from_object(login, "Uri");
+                    if (login != null && login.has_member ("Totp")) {
+                        cipher.totp = this.get_decrypt_value_from_object(login, "Totp");
+                    }
                 }
 
                 Folder folder = null;

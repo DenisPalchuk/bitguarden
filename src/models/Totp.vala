@@ -115,7 +115,7 @@ namespace App {
             throw new GLib.Error.literal (Quark.from_string (""), -1, "Character is not a Base32 character.");
         }
 
-        private static string parse_secret_from_totp_url(string key) {
+        private string parse_secret_from_totp_url(string key) {
             var regex = new Regex("secret=([^&]*)");
             var result = regex.split(key);
             
