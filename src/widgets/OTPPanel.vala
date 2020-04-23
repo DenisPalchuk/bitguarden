@@ -37,7 +37,7 @@ namespace App.Widgets {
 
         private bool timer () {
             timePassed = GLib.get_real_time () / Totp.MICROSECONDS_TO_SECONDS;
-            if (timePassed % timestep == 0) {
+            if (timePassed % timestep == 0 && totp != null) {
                 code_label.label = totp.generate ();
             }
             progressBar.percentage = 1.0 - ((timePassed % timestep) * (1.0 / (double) timestep));
