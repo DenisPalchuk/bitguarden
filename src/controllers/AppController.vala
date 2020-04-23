@@ -40,7 +40,7 @@ namespace App.Controllers {
             this.application = application;
             this.window = new Window (this.application);
             this.headerbar = new HeaderBar ();
-            this.app_view = new AppView ();
+            this.app_view = new AppView (window);
 
             this.window.add (this.app_view);
             this.window.set_default_size (800, 640);

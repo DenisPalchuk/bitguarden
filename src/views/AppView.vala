@@ -30,8 +30,8 @@ public class App.Views.AppView : Gtk.Box {
     /**
      * Constructs a new {@code AppView} object.
      */
-    public AppView () {
-        this.show_quick_login();
+    public AppView (Gtk.Window window) {
+        this.show_quick_login(window);
         App.State.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
                 if (((State)obj).is_vault_unlocked == true) {
                     this.remove (currentWidget);
@@ -40,8 +40,8 @@ public class App.Views.AppView : Gtk.Box {
         });
     }
 
-    private void show_quick_login() {
-        var quick_welcome = new App.Views.QuickLoginView();
+    private void show_quick_login(Gtk.Window window) {
+        var quick_welcome = new App.Views.QuickLoginView(window);
         this.add (quick_welcome);
         this.currentWidget = quick_welcome;
     }
