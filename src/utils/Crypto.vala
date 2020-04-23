@@ -101,7 +101,7 @@ namespace App.Utils {
             return true;
         }
 
-        public static uint8[] remove_padding (uint8[] buffer) {
+        public static uint8[] remove_padding (uint8[] buffer) throws GLib.Error {
             // Padding length is last character in buffer
             var last_char = buffer[buffer.length - 1];
             for (var i = 1; i <= last_char; ++i) {

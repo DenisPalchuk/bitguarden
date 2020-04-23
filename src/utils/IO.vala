@@ -5,9 +5,12 @@ namespace App.Utils {
             uint8[] buffer = new uint8[1024];
             size_t bytes_read = -1;
             while (bytes_read != 0) {
-                yield stream.read_all_async (buffer, Priority.DEFAULT_IDLE, null, out bytes_read);
-
-                result.append (buffer);
+                try {
+                    yield stream.read_all_async (buffer, Priority.DEFAULT_IDLE, null, out bytes_read);
+                    result.append (buffer);
+                }   catch (GLib.Error error) {
+                    warning("Error during reading data from stream: %s", error.message);
+                }
             }
 
             return result.data;

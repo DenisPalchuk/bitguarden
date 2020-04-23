@@ -16,9 +16,5 @@ namespace App.Utils {
 
             return true;
         }
-
-        public static string get_host_name (string uri) {
-            return GLib.NetworkAddress.parse_uri (uri, 80).get_hostname ();
-        }
     }
 }
