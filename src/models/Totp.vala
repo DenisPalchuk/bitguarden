@@ -12,10 +12,14 @@ namespace App {
         private int digits = 6;
         private size_t digest_len = 20;
 
-        public Totp (string key = null, GLib.ChecksumType checksum = GLib.ChecksumType.SHA1) {
+        public Totp (string ? key = null, GLib.ChecksumType checksum = GLib.ChecksumType.SHA1) {
             if (key != null) {
-                var string_secret = this.parse_secret_from_totp_url(key);
-                this.secret = this.base32_decode(string_secret);
+                try {
+                    var string_secret = this.parse_secret_from_totp_url(key);
+                    this.secret = this.base32_decode(string_secret);
+                } catch (GLib.Error error) {
+                    warning("problems with parsing totp key %s", key);
+                }
             }
             checksumType = checksum;
         }
@@ -56,7 +60,7 @@ namespace App {
         }
 
         // https://stackoverflow.com/a/7135008
-        private uint8[] base32_decode (owned string input) {
+        private uint8[] base32_decode (owned string input) throws Error {
             while (input.has_suffix ("=")) {
                 input = input[0 : input.length - 1];
             }
@@ -96,7 +100,7 @@ namespace App {
             return returnArray;
         }
 
-        private static int char_to_value (char c) {
+        private static int char_to_value (char c) throws Error {
             int value = (int) c;
 
             // 65-90 == uppercase letters
@@ -115,7 +119,7 @@ namespace App {
             throw new GLib.Error.literal (Quark.from_string (""), -1, "Character is not a Base32 character.");
         }
 
-        private string parse_secret_from_totp_url(string key) {
+        private string parse_secret_from_totp_url(string key) throws Error {
             var regex = new Regex("secret=([^&]*)");
             var result = regex.split(key);
             

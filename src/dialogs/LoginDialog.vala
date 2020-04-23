@@ -87,7 +87,6 @@ namespace App.Dialogs {
         }
 
         private void on_login_clicked () {
-            string instance = instance_entry.text;
             string email = email_entry.text;
             string password = password_entry.text;
 

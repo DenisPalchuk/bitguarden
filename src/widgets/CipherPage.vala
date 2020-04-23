@@ -5,9 +5,6 @@ using Gee;
 
 namespace App.Widgets {
     public class CipherPage : Gtk.Box {
-        private Gtk.Box user_grid;
-        private Gtk.Box notes_panel;
-
         private CipherHeader cipher_header;
         private EntryWithLabel username_entry;
         private EntryWithLabel password_entry;

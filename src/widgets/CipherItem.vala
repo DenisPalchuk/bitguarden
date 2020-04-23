@@ -24,23 +24,23 @@ namespace App.Widgets {
             grid.column_homogeneous = false;
 
             img = new Gtk.Image.from_icon_name ("image-missing", Gtk.IconSize.LARGE_TOOLBAR);
-            img.margin_left = 8;
+            img.margin_start = 8;
             img.valign = Gtk.Align.CENTER;
 
             line1 = new AlignedLabel ("", Gtk.Align.START);
             line1.get_style_context ().add_class ("h3");
             line1.ellipsize = Pango.EllipsizeMode.END;
             line1.margin_top = 4;
-            line1.margin_left = 8;
-            line1.margin_right = 8;
+            line1.margin_start = 8;
+            line1.margin_end = 8;
             line1.margin_bottom = 0;
             line1.set_vexpand (true);
             line1.set_hexpand (true);
 
             line2 = new AlignedLabel ("", Gtk.Align.START);
             line2.margin_top = 0;
-            line2.margin_left = 8;
-            line2.margin_right = 8;
+            line2.margin_start = 8;
+            line2.margin_end = 8;
             line2.margin_bottom = 4;
             line2.ellipsize = Pango.EllipsizeMode.END;
             line2.set_vexpand (true);

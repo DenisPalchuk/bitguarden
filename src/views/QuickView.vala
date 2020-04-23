@@ -5,10 +5,8 @@ class App.Views.QuickLoginView : Gtk.Grid {
 
     public signal void successful_vault_decrypt();
     
-    private Gtk.Grid grid;
     private Gtk.Entry password_entry;
     private Gtk.Button login_button;
-    private Json.Object ? sync_data;
     
     public QuickLoginView() {
         var logo = new Image.from_resource ("/com/github/denispalchuk/bitguarden/images/logo128");

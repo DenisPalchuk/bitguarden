@@ -20,7 +20,7 @@ namespace App.Widgets {
             name_entry.get_style_context ().add_class ("entry-name");
             name_entry.set_vexpand (false);
             name_entry.set_hexpand (true);
-            name_entry.margin_left = 10;
+            name_entry.margin_start = 10;
             name_entry.focus_out_event.connect ((event) => {
                 name_entry.select_region (0, 0);
 

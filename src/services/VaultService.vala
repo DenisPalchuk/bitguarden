@@ -40,7 +40,12 @@ namespace App {
 
             if (root_object.has_member ("Key")) {
                 var key = root_object.get_string_member ("Key");
+
+                try {
                 encryption_key = decrypted_key (key, email, password);
+                } catch (GLib.Error error) {
+                    warning("Error during decrypting key: %s", error.message);
+                }
             }
 
             return error_object;
@@ -77,10 +82,14 @@ namespace App {
         public async bool unlock (string password) {
             var parser = new Json.Parser ();
             File file = File.new_for_path (bitguarden_dir + sync_data_file);
-            FileInputStream stream = yield file.read_async ();
 
-            yield parser.load_from_stream_async (stream);
-            
+            try {
+                FileInputStream stream = yield file.read_async ();
+                yield parser.load_from_stream_async (stream);
+            } catch (GLib.Error error) {
+                warning("Error during parsing json file: %s", error.message);
+            }
+
             var root_object = parser.get_root ().get_object ();
             if (!root_object.has_member ("Profile")) {
                 return false;
@@ -93,9 +102,9 @@ namespace App {
             var email = profile.get_string_member ("Email");
             try {
                 encryption_key = decrypted_key (key, email, password);
-                var store = App.State.get_instance ();
-                store.encryption_key = encryption_key;
-                store.is_vault_unlocked = true;
+                var state = App.State.get_instance ();
+                state.encryption_key = (string)encryption_key;
+                state.is_vault_unlocked = true;
             } catch (GLib.Error _) {
                 return false;
             }
@@ -121,15 +130,27 @@ namespace App {
         }
 
         public void backup_data_locally (App.Configs.Settings settings, Json.Node root_node, DateTime current_time) {
-            FileUtils.set_contents (bitguarden_dir + sync_data_file, Json.to_string (root_node, false));
+            try {
+                FileUtils.set_contents (bitguarden_dir + sync_data_file, Json.to_string (root_node, false));
+            } catch (GLib.FileError error) {
+                warning("Error during saving json to file: %s", error.message);
+            }
+            
             settings.last_sync = current_time.to_unix ();
         }
 
         public Json.Object ? get_local_data_backup () {
             var parser = new Json.Parser ();
-            parser.load_from_file (bitguarden_dir + sync_data_file);
+            
+            try {
+                parser.load_from_file (bitguarden_dir + sync_data_file);
+                return parser.get_root ().get_object ();
+            } catch (GLib.Error error) {
+                warning("Error during loading json from file: %s", error.message);
+                return null;
+            }
+            
 
-            return parser.get_root ().get_object ();
         }
 
         private void parse_and_update_tokens (Json.Object object) {
@@ -169,7 +190,7 @@ namespace App {
         //      return data;
         //  }
 
-        private uint8[] decrypted_key (string encrypted_key, string email, string password) {
+        private uint8[] decrypted_key (string encrypted_key, string email, string password) throws GLib.Error {
             var key = make_key (password.data, email.down ().data, 5000);
 
             return decrypt_string (encrypted_key, key)[0 : 64];
@@ -188,34 +209,34 @@ namespace App {
             return keybuffer;
         }
 
-        // TODO: Verify that this works
-        private string make_enc_key (uint8[] key) {
-            var pt = GCrypt.Random.random_bytes (64);
-            var iv = GCrypt.Random.random_bytes (16);
+        //  // TODO: Verify that this works
+        //  private string make_enc_key (uint8[] key) {
+        //      var pt = GCrypt.Random.random_bytes (64);
+        //      var iv = GCrypt.Random.random_bytes (16);
 
-            GCrypt.Cipher.Cipher cipher;
-            GCrypt.Cipher.Cipher.open (out cipher, GCrypt.Cipher.Algorithm.AES256, GCrypt.Cipher.Mode.CBC, GCrypt.Cipher.Flag.SECURE);
-            cipher.set_key (pt);
-            cipher.set_iv (iv);
-            uchar[] out_buffer = null;
-            cipher.encrypt (out_buffer, key);
+        //      GCrypt.Cipher.Cipher cipher;
+        //      GCrypt.Cipher.Cipher.open (out cipher, GCrypt.Cipher.Algorithm.AES256, GCrypt.Cipher.Mode.CBC, GCrypt.Cipher.Flag.SECURE);
+        //      cipher.set_key (pt);
+        //      cipher.set_iv (iv);
+        //      uchar[] out_buffer = null;
+        //      cipher.encrypt (out_buffer, key);
 
-            return compose_encrypted_string (0, iv, out_buffer);
-        }
+        //      return compose_encrypted_string (0, iv, out_buffer);
+        //  }
 
-        // TODO: Verify that this works
-        private string compose_encrypted_string (int enc_type, uint8[] iv, uchar[] ct, uchar[] ? mac = null) {
-            string outMac = null;
-            if (mac != null) {
-                outMac = Base64.encode (mac);
-            }
-            string[] v = { "%d.%s".printf (enc_type, Base64.encode (iv)), Base64.encode (ct), outMac };
+        //  // TODO: Verify that this works
+        //  private string compose_encrypted_string (int enc_type, uint8[] iv, uchar[] ct, uchar[] ? mac = null) {
+        //      string outMac = null;
+        //      if (mac != null) {
+        //          outMac = Base64.encode (mac);
+        //      }
+        //      string[] v = { "%d.%s".printf (enc_type, Base64.encode (iv)), Base64.encode (ct), outMac };
 
-            return string.join ("|", v);
-        }
+        //      return string.join ("|", v);
+        //  }
 
         // https://github.com/bitwarden/mobile/blob/1ec31c6899fd9ec6d86738986c75720ec490880f/src/App/Services/CryptoService.cs#L92
-        public uint8[] decrypt_string (string encrypted_string, owned uint8[] key, owned uint8[] ? mac_key = null) {
+        public uint8[] decrypt_string (string encrypted_string, owned uint8[] key, owned uint8[] ? mac_key = null) throws GLib.Error {
             string[] split_string = encrypted_string.substring (2, -1).split ("|");
             var type = int.parse (encrypted_string.substring (0, 1));
             var iv = Base64.decode (split_string[0]);
@@ -261,7 +282,7 @@ namespace App {
             return Crypto.add_terminating_zero (Crypto.remove_padding (out_buffer));
         }
 
-        public void sync_folders_with_store () {
+        public void sync_folders_with_store () throws GLib.Error {
             var sync_data = this.sync ();
             var folders_obj = sync_data.get_array_member ("Folders");
             parse_folders (folders_obj);
@@ -269,12 +290,12 @@ namespace App {
             parse_ciphers (ciphers);
         }
 
-        private void parse_folders (Json.Array ? folders_obj) {
+        private void parse_folders (Json.Array ? folders_obj) throws GLib.Error {
             folders_obj.foreach_element ((array, index, node) => {
                 var object = node.get_object ();
                 var folder = new Folder ();
                 folder.id = object.get_string_member ("Id");
-                folder.name = (string) (this.decrypt_string (object.get_string_member ("Name"), this.encryption_key));
+                folder.name = this.get_decrypt_value_from_object(object, "Name");
                 App.State.get_instance ().folders.set(folder.id, folder);
             });
 
@@ -300,10 +321,8 @@ namespace App {
                 }
 
                 Folder folder = null;
-                if (object.has_member("FolderId")) {
-                    var folderId = object.get_string_member ("FolderId");
-                    folder = App.State.get_instance ().folders.get (folderId);
-                }
+                var folder_id = this.get_string_value_if_exist(object, "FolderId");
+                folder = App.State.get_instance ().folders.get (folder_id);
                 
                 if (folder == null) {
                     folder = App.State.get_instance ().folders.get("Without folder");
@@ -313,17 +332,27 @@ namespace App {
             });
         }
 
-        private string get_decrypt_value_from_object (Json.Object object, string key) {
+        private string ? get_string_value_if_exist(Json.Object object, string key) {
             if (!object.has_member (key)) {
                 return null;
             }
 
-            var encrypted_value = object.get_string_member (key);
+            return object.get_string_member (key);
+        }
+
+        private string ? get_decrypt_value_from_object (Json.Object object, string key) {
+            var encrypted_value = this.get_string_value_if_exist(object, key);
 
             if (encrypted_value == null) {
                 return null;
             }
-            return (string)(this.decrypt_string(encrypted_value, this.encryption_key));
+            try {
+                var decrypted_string = (string)(this.decrypt_string(encrypted_value, this.encryption_key));
+                return decrypted_string;
+            } catch (GLib.Error error) {
+                warning("Error during string decryption %s", error.message);
+                return null;
+            }
         }
 
         

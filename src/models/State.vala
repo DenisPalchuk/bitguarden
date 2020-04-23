@@ -5,7 +5,7 @@ namespace App {
     class State: GLib.Object {
         public bool is_vault_unlocked { get; set; default = false; }
 
-        public uint8[] encryption_key { get; set; }
+        public string encryption_key { get; set; }
         public HashMap<string ? , Folder> folders;
 
         public string search_text { get; set; default = ""; }

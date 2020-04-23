@@ -3,15 +3,17 @@ using App.Models;
 
 class App.Views.VaultView: Gtk.Paned {
 
-    private Gtk.Paned main_panel;
     private Gtk.Paned child_panel;
     private Sidebar sidebar;
 
 
     public VaultView(Gtk.Orientation orientation) {
         Object (orientation: orientation);
-
-        App.VaultService.get_instance().sync_folders_with_store();
+        try {
+            App.VaultService.get_instance().sync_folders_with_store();
+        } catch (GLib.Error error) {
+            warning("Error during syncing folders with state: %s", error.message);
+        }
 
     
         child_panel = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
