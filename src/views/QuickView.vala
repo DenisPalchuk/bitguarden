@@ -25,16 +25,13 @@ class App.Views.QuickLoginView : Gtk.Grid {
         password_entry.primary_icon_name = "dialog-password-symbolic";
 
         password_feedback = new Gtk.Label (null);
-        password_feedback.justify = Gtk.Justification.RIGHT;
         password_feedback.max_width_chars = 40;
-        password_feedback.wrap = true;
-        password_feedback.xalign = 1;
         password_feedback.get_style_context ().add_class (Gtk.STYLE_CLASS_ERROR);
 
         feedback_revealer = new Gtk.Revealer ();
+        feedback_revealer.margin_top = 5;
         feedback_revealer.add (password_feedback);
 
-        var box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
         login_button = new Gtk.Button.with_label (_ ("Unlock"));
         login_button.margin_top = 15;
         login_button.halign = Gtk.Align.CENTER;
@@ -42,11 +39,7 @@ class App.Views.QuickLoginView : Gtk.Grid {
 
         spinner = new Gtk.Spinner();
 
-        box.pack_start(login_button);
-        box.pack_start(spinner);
-        
         this.column_spacing = 12;
-        this.row_spacing = 6;
         this.hexpand = true;
         this.halign = Gtk.Align.CENTER;
         this.valign = Gtk.Align.CENTER;
@@ -54,7 +47,8 @@ class App.Views.QuickLoginView : Gtk.Grid {
         this.attach (new AlignedLabel (_ ("Password:")), 0, 1);
         this.attach (password_entry, 1, 1);
         this.attach (feedback_revealer, 0, 2, 2);
-        this.attach (box, 0, 3, 2);
+        this.attach (login_button, 0, 3, 2);
+        this.attach (spinner, 0, 4, 2);
         spinner.hide();
         password_entry.activate.connect(() => {
             login_button.clicked();
