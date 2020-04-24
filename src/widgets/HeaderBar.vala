@@ -39,14 +39,6 @@ namespace App.Widgets {
          */
         public HeaderBar () {
 
-
-            menu_button = new Gtk.MenuButton ();
-            menu_button.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
-            menu_button.tooltip_text = _ ("Settings");
-            menu_button.clicked.connect (() => {
-                menu_clicked ();
-            });
-
             var search_entry = new Gtk.SearchEntry();
             search_entry.set_no_show_all(true);
             search_entry.hide();
@@ -65,7 +57,7 @@ namespace App.Widgets {
 
             this.set_title ("Bitguarden");
             this.show_close_button = true;
-            this.pack_end (menu_button);
+            this.has_subtitle = false;
             this.pack_end (search_entry);
         }
     }
