@@ -14,7 +14,6 @@ namespace App.Widgets {
             this.cipher_page = page; 
 
             build_ui ();
-            connect_signals ();
         }
 
         private void build_ui () {
@@ -61,9 +60,9 @@ namespace App.Widgets {
             clear_listbox ();
             foreach (Cipher cipher in _ciphers) {
                 // TODO: add cards support
-                if (cipher.cipher_type == CipherType.CARD || cipher.cipher_type == CipherType.NOTE) {
-                    continue;
-                }
+                //  if (cipher.cipher_type == CipherType.CARD || cipher.cipher_type == CipherType.NOTE) {
+                //      continue;
+                //  }
                 var row = new CipherItem (cipher);
                 listbox.add (row);
             }
@@ -76,13 +75,6 @@ namespace App.Widgets {
                     listbox.remove (child);
                 }
             }
-        }
-
-        private void connect_signals () {
-            listbox.row_selected.connect ((row) => {
-                if (row == null) return;
-                this.cipher_page.set_cipher (((CipherItem) row).cipher);
-            });
         }
     }
 }

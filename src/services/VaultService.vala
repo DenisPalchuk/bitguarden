@@ -320,6 +320,8 @@ namespace App {
                     }
                 }
 
+                
+
                 Folder folder = null;
                 var folder_id = this.get_string_value_if_exist(object, "FolderId");
                 folder = App.State.get_instance ().folders.get (folder_id);
