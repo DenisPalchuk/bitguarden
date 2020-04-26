@@ -8,6 +8,7 @@ namespace App.Widgets {
         public Folder all_items;
 
         public Sidebar () {
+            this.set_size_request(220, -1);
             all_items = new Folder ();
             all_items.id = "all-items";
             all_items.name = _ ("All passwords");

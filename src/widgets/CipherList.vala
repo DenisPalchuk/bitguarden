@@ -9,6 +9,7 @@ namespace App.Widgets {
         private ArrayList<Cipher> _ciphers;
 
         public CipherList (CipherPage page) {
+            this.set_size_request(250, -1);
             _ciphers = new ArrayList<Cipher>();
             this.cipher_page = page; 
 
