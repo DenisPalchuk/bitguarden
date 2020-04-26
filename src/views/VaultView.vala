@@ -18,17 +18,17 @@ class App.Views.VaultView: Gtk.Paned {
     
         child_panel = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
         
-        var cipher_page = new CipherPage (null);
-        var cipher_list = new CipherList (cipher_page);
+        var cipher_list = new CipherList ();
         child_panel.pack1 (cipher_list, false, false);
-        child_panel.pack2 (cipher_page, true, false);
         
         sidebar = new Sidebar ();
 
         cipher_list.listbox.row_selected.connect ((row) => {
             if (row == null) return;
-            cipher_page = new CipherPage(((CipherItem) row).cipher);
+            var cipher_page = new CipherPage(((CipherItem) row).cipher);
+            child_panel.remove(child_panel.get_child2());
             child_panel.pack2(cipher_page, true, false);
+            cipher_page.show_all();
         });
 
         this.initialize_chipher_list_by_folder (sidebar.all_passwords, cipher_list);

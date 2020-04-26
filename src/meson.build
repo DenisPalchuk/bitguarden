@@ -31,6 +31,7 @@ sources += files(
     'widgets/OTPPanel.vala',
     'widgets/CircularProgressBar.vala',
     'widgets/PasswordView.vala',
+    'widgets/SecureNoteView.vala',
 
     'models/Totp.vala',
 

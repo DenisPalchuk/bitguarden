@@ -5,13 +5,11 @@ using Gee;
 namespace App.Widgets {
     public class CipherList : Gtk.Box {
         public Gtk.ListBox listbox;
-        public CipherPage cipher_page;
         private ArrayList<Cipher> _ciphers;
 
-        public CipherList (CipherPage page) {
+        public CipherList () {
             this.set_size_request(250, -1);
             _ciphers = new ArrayList<Cipher>();
-            this.cipher_page = page; 
 
             build_ui ();
         }

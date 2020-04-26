@@ -7,7 +7,7 @@ namespace App.Widgets {
     public class CipherPage : Gtk.Box {
         private CipherHeader cipher_header;
 
-        public CipherPage (Cipher ? cipher) {
+        public CipherPage (Cipher cipher) {
             this.orientation = Gtk.Orientation.VERTICAL;
 
             var user_grid = new Gtk.Grid ();
@@ -22,12 +22,16 @@ namespace App.Widgets {
             user_grid.attach (cipher_header, 0, 0, 1, 1);
             add (user_grid);
             margin = 20;
-            
-            if (cipher != null) {
-                Gtk.Grid entry_grid = new PasswordView(cipher);
-                user_grid.attach (entry_grid, 0, 1, 1, 1);
-                cipher_header.set_text (cipher.name);
-            }
+            Gtk.Grid entry_grid;
+
+            if (cipher.cipher_type == CipherType.NOTE) {
+                entry_grid = new SecureNoteView (cipher);
+            } else {
+                entry_grid = new PasswordView (cipher);
+            } 
+
+            user_grid.attach (entry_grid, 0, 1, 1, 1);
+            cipher_header.set_text (cipher.name);
             
         }
 

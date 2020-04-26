@@ -320,6 +320,10 @@ namespace App {
                     }
                 }
 
+                if (cipher.cipher_type == CipherType.NOTE) {
+                    cipher.note = this.get_decrypt_value_from_object(object, "Notes");
+                }
+
                 
 
                 Folder folder = null;
