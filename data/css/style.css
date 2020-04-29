@@ -42,3 +42,8 @@ grid.entry-grid {
 .code-label {
     font-size: 20px;
 }
+
+
+.note__text-area {
+    background: #b5b5b5;
+}

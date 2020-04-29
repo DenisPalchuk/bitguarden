@@ -3,13 +3,13 @@ using App.Configs;
 
 namespace App.Widgets {
     public class EntryWithLabel : Gtk.Grid {
-        public AlignedLabel label;
+        public Granite.HeaderLabel label;
         public Entry entry;
 
         public EntryWithLabel (string text, Gtk.Align aligned = Gtk.Align.END) {
             orientation = Gtk.Orientation.VERTICAL;
 
-            label = new AlignedLabel (text, aligned);
+            label = new Granite.HeaderLabel (text);
             entry = new Entry ();
 
             add (label);

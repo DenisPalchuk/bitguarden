@@ -8,7 +8,7 @@ namespace App.Widgets {
             this.orientation = Gtk.Orientation.HORIZONTAL;
             this.get_style_context ().add_class ("entry-grid");
 
-            var username_entry = new EntryWithLabel (_ ("Username"), Gtk.Align.START);
+            var username_entry = new EntryWithLabel (_ ("Username:"), Gtk.Align.START);
             username_entry.entry.set_icon_from_icon_name (Gtk.EntryIconPosition.SECONDARY, "edit-copy");
             username_entry.entry.set_hexpand (true);
             username_entry.entry.icon_press.connect ((pos, event) => {
@@ -18,7 +18,7 @@ namespace App.Widgets {
                 }
             });
 
-            var password_entry = new EntryWithLabel (_ ("Password"), Gtk.Align.START);
+            var password_entry = new EntryWithLabel (_ ("Password:"), Gtk.Align.START);
             password_entry.entry.set_visibility (false);
             password_entry.entry.set_hexpand (true);
 
@@ -33,7 +33,7 @@ namespace App.Widgets {
                 }
             });
 
-            var totp_entry = new EntryWithLabel (_ ("Authenticator Key (TOTP)"), Gtk.Align.START);
+            var totp_entry = new EntryWithLabel (_ ("Authenticator Key (TOTP):"), Gtk.Align.START);
             totp_entry.entry.set_icon_from_icon_name (Gtk.EntryIconPosition.SECONDARY, "edit-copy");
             totp_entry.entry.set_hexpand (true);
             totp_entry.entry.icon_press.connect ((pos, event) => {

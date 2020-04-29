@@ -54,11 +54,11 @@ msgid "Name"
 msgstr ""
 
 #: src/widgets/CipherPage.vala:29
-msgid "Username"
+msgid "Username:"
 msgstr ""
 
 #: src/widgets/CipherPage.vala:38
-msgid "Password"
+msgid "Password:"
 msgstr ""
 
 #: src/widgets/Sidebar.vala:12
