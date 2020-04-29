@@ -310,6 +310,9 @@ namespace App {
                 var cipher = new App.Models.Cipher ();
                 cipher.cipher_type = CipherType.from_type(object.get_int_member("Type"));
                 cipher.name = this.get_decrypt_value_from_object(object, "Name");
+                if (cipher.name.contains("GitHub")) {
+                    debug("github found %s", Json.to_string(node, true));
+                }
                 
                 if (cipher.cipher_type == CipherType.PASSWORD) {
                     cipher.username = this.get_decrypt_value_from_object(login, "Username");
@@ -318,6 +321,7 @@ namespace App {
                     if (login != null && login.has_member ("Totp")) {
                         cipher.totp = this.get_decrypt_value_from_object(login, "Totp");
                     }
+                    cipher.note = this.get_decrypt_value_from_object(object, "Notes");
                 }
 
                 if (cipher.cipher_type == CipherType.NOTE) {

@@ -47,11 +47,18 @@ namespace App.Widgets {
             otp_panel.hide ();
             otp_panel.set_no_show_all (true);
 
+            
+
+
             this.attach (username_entry, 0, 2, 1, 1);
-            // TODO: Insert folder here
             this.attach (password_entry, 1, 2, 1, 1);
             this.attach (totp_entry, 0, 3, 1, 1);
             this.attach (otp_panel, 1, 3, 1, 1);
+
+            if (cipher.note != null) {
+                var secure_note = new SecureNoteView (cipher);
+                this.attach (secure_note, 0, 4, 2, 1);
+            }
 
             username_entry.text = cipher.username;
             password_entry.text = cipher.password;

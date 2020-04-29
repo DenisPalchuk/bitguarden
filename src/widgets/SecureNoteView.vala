@@ -20,6 +20,7 @@ namespace App.Widgets {
             note_entry.set_bottom_margin(10);
             note_entry.set_left_margin(10);
             note_entry.set_right_margin(10);
+            note_entry.set_editable(false);
 
             var grid = new Gtk.Grid ();
             grid.orientation = Gtk.Orientation.VERTICAL;
