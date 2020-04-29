@@ -43,10 +43,10 @@ namespace App.Widgets {
 
             clear_listbox();
             foreach (var cipher in _ciphers) {
-                if (cipher.name.contains (search_text) ||
+                if (cipher.name.ascii_down().contains (search_text.ascii_down()) ||
                     // TODO: uncomment it later when will add URI entry to cipher page
                     //  cipher.uri.contains (search_text) ||
-                    cipher.username != null && cipher.username.contains (search_text)
+                    cipher.username != null && cipher.username.ascii_down().contains (search_text.ascii_down())
                 ) {
                     var row = new CipherItem (cipher);
                     listbox.add (row);
