@@ -30,6 +30,8 @@ sources += files(
     'widgets/CipherHeader.vala',
     'widgets/OTPPanel.vala',
     'widgets/CircularProgressBar.vala',
+    'widgets/PasswordView.vala',
+    'widgets/SecureNoteView.vala',
 
     'models/Totp.vala',
 

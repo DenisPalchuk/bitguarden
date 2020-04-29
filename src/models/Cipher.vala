@@ -6,6 +6,7 @@ namespace App.Models {
         public string password { get; set; }
         public string uri { get; set; }
         public string totp { get; set; }
+        public string note { get; set; }
         public CipherType cipher_type { get; set; default = CipherType.PASSWORD; }
     }
 

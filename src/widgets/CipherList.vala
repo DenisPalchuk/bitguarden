@@ -5,16 +5,13 @@ using Gee;
 namespace App.Widgets {
     public class CipherList : Gtk.Box {
         public Gtk.ListBox listbox;
-        public CipherPage cipher_page;
         private ArrayList<Cipher> _ciphers;
 
-        public CipherList (CipherPage page) {
+        public CipherList () {
             this.set_size_request(250, -1);
             _ciphers = new ArrayList<Cipher>();
-            this.cipher_page = page; 
 
             build_ui ();
-            connect_signals ();
         }
 
         private void build_ui () {
@@ -46,10 +43,10 @@ namespace App.Widgets {
 
             clear_listbox();
             foreach (var cipher in _ciphers) {
-                if (cipher.name.contains (search_text) ||
+                if (cipher.name.ascii_down().contains (search_text.ascii_down()) ||
                     // TODO: uncomment it later when will add URI entry to cipher page
                     //  cipher.uri.contains (search_text) ||
-                    cipher.username != null && cipher.username.contains (search_text)
+                    cipher.username != null && cipher.username.ascii_down().contains (search_text.ascii_down())
                 ) {
                     var row = new CipherItem (cipher);
                     listbox.add (row);
@@ -61,9 +58,9 @@ namespace App.Widgets {
             clear_listbox ();
             foreach (Cipher cipher in _ciphers) {
                 // TODO: add cards support
-                if (cipher.cipher_type == CipherType.CARD || cipher.cipher_type == CipherType.NOTE) {
-                    continue;
-                }
+                //  if (cipher.cipher_type == CipherType.CARD || cipher.cipher_type == CipherType.NOTE) {
+                //      continue;
+                //  }
                 var row = new CipherItem (cipher);
                 listbox.add (row);
             }
@@ -76,13 +73,6 @@ namespace App.Widgets {
                     listbox.remove (child);
                 }
             }
-        }
-
-        private void connect_signals () {
-            listbox.row_selected.connect ((row) => {
-                if (row == null) return;
-                this.cipher_page.set_cipher (((CipherItem) row).cipher);
-            });
         }
     }
 }
