@@ -51,6 +51,13 @@ namespace App.Widgets {
             separator.hexpand = true;
 
             add (grid);
+
+            this.show_icon(_cipher.icon, grid);
+            _cipher.notify["icon"].connect((obj, val) => {
+                var image_path = ((Cipher)obj).icon;
+                this.show_icon(image_path, grid);
+            });
+            
             grid.attach (img, 0, 0, 1, 2);
             grid.attach (line1, 1, 0, 1, 1);
             grid.attach (line2, 1, 1, 1, 1);
@@ -58,11 +65,29 @@ namespace App.Widgets {
 
             load_data ();
             show_all ();
+
+            
         }
 
         public void load_data () {
             line2.label = _cipher.username;
             line1.label = _cipher.name;
+        }
+
+        private void show_icon(string image_path, Gtk.Grid grid) {
+            grid.remove(img);
+            try {    
+                var pixbuf = new Gdk.Pixbuf.from_file_at_size(image_path, 16, 16);
+                img = new Gtk.Image.from_pixbuf(pixbuf);
+                grid.attach (img, 0, 0, 1, 2);
+            } catch (Gdk.PixbufError error) {
+                img = new Gtk.Image.from_icon_name ("image-missing", Gtk.IconSize.LARGE_TOOLBAR);
+            }
+            img.margin_start = 8;
+            img.valign = Gtk.Align.CENTER;
+
+            grid.attach (img, 0, 0, 1, 2);
+            this.show_all();
         }
     }
 }

@@ -1,5 +1,5 @@
 namespace App.Models {
-    public class Cipher {
+    public class Cipher: GLib.Object {
         public string id { get; set; }
         public string name { get; set; }
         public string username { get; set; }
@@ -7,6 +7,7 @@ namespace App.Models {
         public string uri { get; set; }
         public string totp { get; set; }
         public string note { get; set; }
+        public string ? icon { get; set; }
         public CipherType cipher_type { get; set; default = CipherType.PASSWORD; }
     }
 

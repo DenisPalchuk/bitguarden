@@ -15,11 +15,11 @@ namespace App.Widgets {
             user_grid.row_spacing = 20;
             user_grid.orientation = Gtk.Orientation.HORIZONTAL;
 
-            cipher_header = new CipherHeader ();
+            cipher_header = new CipherHeader (cipher);
             cipher_header.set_vexpand (false);
             cipher_header.set_hexpand (false);
             
-            user_grid.attach (cipher_header, 0, 0, 1, 1);
+            //  user_grid.attach (cipher_header, 0, 0, 1, 1);
             add (user_grid);
             margin = 20;
             Gtk.Grid entry_grid;

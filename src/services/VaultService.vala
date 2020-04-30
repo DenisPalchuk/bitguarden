@@ -165,30 +165,31 @@ namespace App {
             settings.expiry_time = expiry_time.to_unix ();
         }
 
-        // TODO: return it later
-        //  public async uint8[] ? download_icon (string url) {
-        //      var icon_url = Constants.BITWARDEN_ICONS_URL + "/" + url + "/icon.png";
+        public async string ? download_icon (string url) {
+            var icon_url = Constants.BITWARDEN_ICONS_URL + "/" + url + "/icon.png";
 
-        //      stdout.printf ("Looking for: %s\n", bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
-        //      var icon_file = File.new_for_path (bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
-        //      if (icon_file.query_exists ()) {
-        //          string etag;
-        //          var icon = yield icon_file.load_bytes_async (null, out etag);
+            stdout.printf ("Looking for: %s\n", bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
+            var icon_path = bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png";
+            var icon_file = File.new_for_path (icon_path);
+            if (icon_file.query_exists ()) {
+                string etag;
+                var icon = yield icon_file.load_bytes_async (null, out etag);
 
-        //          // Check if icon is newer than 7 days
-        //          if (((GLib.get_real_time () / 1000000) - int64.parse (etag.split (":")[0])) / 1440000 < 7) {
-        //              return icon.get_data ();
-        //          }
-        //      }
+                // Check if icon is newer than 7 days
+                if (((GLib.get_real_time () / 1000000) - int64.parse (etag.split (":")[0])) / 1440000 < 7) {
+                    return icon_path;
+                }
+            }
 
-        //      var message = new Soup.Message ("GET", icon_url);
-        //      var stream = yield session.send_async (message);
-        //      var data = yield Utils.IO.input_stream_to_array(stream);
+            Soup.Session session = new Soup.Session ();
+            var message = new Soup.Message ("GET", icon_url);
+            var stream = yield session.send_async (message);
+            var data = yield Utils.IO.input_stream_to_array(stream);
 
-        //      yield icon_file.replace_contents_async(data, null, false, FileCreateFlags.NONE, null, null);
+            yield icon_file.replace_contents_async(data, null, false, FileCreateFlags.NONE, null, null);
 
-        //      return data;
-        //  }
+            return icon_path;
+        }
 
         private uint8[] decrypted_key (string encrypted_key, string email, string password) throws GLib.Error {
             var key = make_key (password.data, email.down ().data, 5000);
@@ -310,14 +311,21 @@ namespace App {
                 var cipher = new App.Models.Cipher ();
                 cipher.cipher_type = CipherType.from_type(object.get_int_member("Type"));
                 cipher.name = this.get_decrypt_value_from_object(object, "Name");
-                if (cipher.name.contains("GitHub")) {
-                    debug("github found %s", Json.to_string(node, true));
-                }
                 
                 if (cipher.cipher_type == CipherType.PASSWORD) {
                     cipher.username = this.get_decrypt_value_from_object(login, "Username");
                     cipher.password = this.get_decrypt_value_from_object(login, "Password");
                     cipher.uri = this.get_decrypt_value_from_object(login, "Uri");
+                    if (cipher.uri != null) {
+                        var regex = new Regex("^https?://([^/:?#]+)(?:[/:?#]|$)");
+                        var result = regex.split(cipher.uri);
+                        if (result.length >= 2) {
+                            this.download_icon.begin(result[1],(obj, res) => {
+                                cipher.icon = this.download_icon.end(res);
+                            });
+                        }
+                        
+                    }
                     if (login != null && login.has_member ("Totp")) {
                         cipher.totp = this.get_decrypt_value_from_object(login, "Totp");
                     }

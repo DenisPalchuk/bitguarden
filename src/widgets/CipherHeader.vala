@@ -1,18 +1,24 @@
 using Gtk;
 using App.Configs;
+using App.Models;
 
 namespace App.Widgets {
     public class CipherHeader : Gtk.Grid {
         private Gtk.Image item_image;
         private Gtk.Entry name_entry;
 
-        public CipherHeader () {
+        public CipherHeader (Cipher cipher) {
             orientation = Gtk.Orientation.VERTICAL;
             column_homogeneous = false;
             set_vexpand (false);
             set_hexpand (false);
 
             item_image = new Gtk.Image.from_icon_name ("image-missing", Gtk.IconSize.DIALOG);
+            this.show_icon(cipher.icon);
+            cipher.notify["icon"].connect((obj, val) => {
+                var image_path = ((Cipher)obj).icon;
+                this.show_icon(image_path);
+            });
             item_image.pixel_size = 64;
             item_image.valign = Gtk.Align.START;
 
@@ -33,6 +39,14 @@ namespace App.Widgets {
 
         public void set_text (string text) {
             name_entry.text = text;
+        }
+
+        private void show_icon (string image_path) {
+            if (image_path != null) {
+                this.remove(item_image);
+                item_image = new Gtk.Image.from_file(image_path);
+                this.attach(item_image, 0, 0, 1, 1);
+            }
         }
     }
 }
