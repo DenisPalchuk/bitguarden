@@ -82,13 +82,12 @@ namespace App.Widgets {
             try {
                 var pixbuf = new Gdk.Pixbuf.from_file_at_size(image_path, 16, 16);
                 img = new Gtk.Image.from_pixbuf(pixbuf);
-                grid.attach (img, 0, 0, 1, 2);
             } catch (Gdk.PixbufError error) {
                 img = new Gtk.Image.from_icon_name ("image-missing", Gtk.IconSize.LARGE_TOOLBAR);
             }
             img.margin_start = 8;
             img.valign = Gtk.Align.CENTER;
-
+            grid.attach (img, 0, 0, 1, 2);
             this.show_all();
         }
     }
