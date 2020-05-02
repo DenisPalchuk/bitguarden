@@ -165,10 +165,9 @@ namespace App {
             settings.expiry_time = expiry_time.to_unix ();
         }
 
-        public async string ? download_icon (string url) {
+        public async string ? download_and_cache_icon (string url) {
             var icon_url = Constants.BITWARDEN_ICONS_URL + "/" + url + "/icon.png";
 
-            stdout.printf ("Looking for: %s\n", bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png");
             var icon_path = bitguarden_dir + "icons/" + Crypto.md5_string (url) + ".png";
             var icon_file = File.new_for_path (icon_path);
             if (icon_file.query_exists ()) {
@@ -320,8 +319,8 @@ namespace App {
                         var regex = new Regex("^https?://([^/:?#]+)(?:[/:?#]|$)");
                         var result = regex.split(cipher.uri);
                         if (result.length >= 2) {
-                            this.download_icon.begin(result[1],(obj, res) => {
-                                cipher.icon = this.download_icon.end(res);
+                            this.download_and_cache_icon.begin(result[1],(obj, res) => {
+                                cipher.icon = this.download_and_cache_icon.end(res);
                             });
                         }
                         

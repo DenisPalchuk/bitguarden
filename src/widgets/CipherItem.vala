@@ -74,7 +74,11 @@ namespace App.Widgets {
             line1.label = _cipher.name;
         }
 
-        private void show_icon(string image_path, Gtk.Grid grid) {
+        private void show_icon(string ? image_path, Gtk.Grid grid) {
+            if (image_path == null) {
+                return;
+            }
+
             grid.remove(img);
             try {    
                 var pixbuf = new Gdk.Pixbuf.from_file_at_size(image_path, 16, 16);
@@ -86,7 +90,6 @@ namespace App.Widgets {
             img.margin_start = 8;
             img.valign = Gtk.Align.CENTER;
 
-            grid.attach (img, 0, 0, 1, 2);
             this.show_all();
         }
     }

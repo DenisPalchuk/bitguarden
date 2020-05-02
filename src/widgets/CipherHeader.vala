@@ -41,7 +41,7 @@ namespace App.Widgets {
             name_entry.text = text;
         }
 
-        private void show_icon (string image_path) {
+        private void show_icon (string ? image_path) {
             if (image_path != null) {
                 this.remove(item_image);
                 item_image = new Gtk.Image.from_file(image_path);

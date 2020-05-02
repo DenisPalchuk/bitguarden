@@ -58,9 +58,9 @@ namespace App.Widgets {
             clear_listbox ();
             foreach (Cipher cipher in _ciphers) {
                 // TODO: add cards support
-                //  if (cipher.cipher_type == CipherType.CARD || cipher.cipher_type == CipherType.NOTE) {
-                //      continue;
-                //  }
+                if (cipher.cipher_type == CipherType.CARD) {
+                    continue;
+                }
                 var row = new CipherItem (cipher);
                 listbox.add (row);
             }
