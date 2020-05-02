@@ -58,7 +58,6 @@ namespace App.Widgets {
                 this.show_icon(image_path, grid);
             });
             
-            grid.attach (img, 0, 0, 1, 2);
             grid.attach (line1, 1, 0, 1, 1);
             grid.attach (line2, 1, 1, 1, 1);
             grid.attach (separator, 0, 10, 2, 1);
@@ -80,7 +79,7 @@ namespace App.Widgets {
             }
 
             grid.remove(img);
-            try {    
+            try {
                 var pixbuf = new Gdk.Pixbuf.from_file_at_size(image_path, 16, 16);
                 img = new Gtk.Image.from_pixbuf(pixbuf);
                 grid.attach (img, 0, 0, 1, 2);
