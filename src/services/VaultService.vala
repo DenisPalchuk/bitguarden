@@ -342,7 +342,7 @@ namespace App {
                 folder = App.State.get_instance ().folders.get (folder_id);
                 
                 if (folder == null) {
-                    folder = App.State.get_instance ().folders.get("Without folder");
+                    folder = App.State.get_instance ().folders.get("Passwords > Without folder");
                 }
 
                 folder.add_cipher (cipher);

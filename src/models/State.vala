@@ -13,7 +13,7 @@ namespace App {
         public State() {
             folders = new HashMap<string ? , Folder>();
             var folder = new Folder ();
-            folder.id = "Without folder";
+            folder.id = "Passwords > Without folder";
             folder.name = folder.id;
             folders.set(folder.id, folder);
         }
