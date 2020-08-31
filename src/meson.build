@@ -32,6 +32,7 @@ sources += files(
     'widgets/CircularProgressBar.vala',
     'widgets/PasswordView.vala',
     'widgets/SecureNoteView.vala',
+    'widgets/TotpGrid.vala',
 
     'models/Totp.vala',
 

@@ -31,9 +31,6 @@ namespace CircularProgressWidgets {
         [Description (nick = "Radius Fill", blurb = "Radius Fill toggle")]
         public bool radius_filled { set; get; default = false; }
 
-        [Description (nick = "Font", blurb = "Font description without size, just the font name")]
-        public string font { set; get; default = "URW Gothic L Book"; }
-
         [Description (nick = "Line Cap", blurb = "Line Cap for stroke as in Cairo.LineCap")]
         public Cairo.LineCap line_cap { set; get; default = Cairo.LineCap.BUTT; }
 
@@ -172,8 +169,6 @@ namespace CircularProgressWidgets {
             int delta;
             Gdk.RGBA color;
             Pango.Layout layout;
-            Pango.FontDescription desc;
-
             cr.save ();
 
             color = Gdk.RGBA ();
@@ -231,8 +226,6 @@ namespace CircularProgressWidgets {
             // Percentage
             layout = Pango.cairo_create_layout (cr);
             layout.set_text ("%d".printf ((int) (percentage * max_value)), -1);
-            desc = Pango.FontDescription.from_string (font + " 10");
-            layout.set_font_description (desc);
             Pango.cairo_update_layout (cr, layout);
             layout.get_size (out w, out h);
             cr.move_to (center_x - ((w / Pango.SCALE) / 2), center_y - ((h / Pango.SCALE) / 2));

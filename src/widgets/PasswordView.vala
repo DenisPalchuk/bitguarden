@@ -33,27 +33,11 @@ namespace App.Widgets {
                 }
             });
 
-            var totp_entry = new EntryWithLabel (_ ("Authenticator Key (TOTP):"), Gtk.Align.START);
-            totp_entry.entry.set_icon_from_icon_name (Gtk.EntryIconPosition.SECONDARY, "edit-copy");
-            totp_entry.entry.set_hexpand (true);
-            totp_entry.entry.icon_press.connect ((pos, event) => {
-                if (pos == Gtk.EntryIconPosition.SECONDARY) {
-                    Gtk.Clipboard clipboard = Gtk.Clipboard.get (Gdk.SELECTION_CLIPBOARD);
-                    clipboard.set_text (totp_entry.entry.text, -1);
-                }
-            });
+            var totp_grid = new TotpGrid (cipher);
 
-            var otp_panel = new OTPPanel ();
-            otp_panel.hide ();
-            otp_panel.set_no_show_all (true);
-
-            
-
-
-            this.attach (username_entry, 0, 2, 1, 1);
-            this.attach (password_entry, 1, 2, 1, 1);
-            this.attach (totp_entry, 0, 3, 1, 1);
-            this.attach (otp_panel, 1, 3, 1, 1);
+            this.attach (username_entry, 0, 0, 1, 1);
+            this.attach (password_entry, 0, 1, 1, 1);
+            this.attach (totp_grid, 0, 2, 1, 1);
 
             if (cipher.note != null) {
                 var secure_note = new SecureNoteView (cipher);
@@ -63,14 +47,6 @@ namespace App.Widgets {
             username_entry.text = cipher.username;
             password_entry.text = cipher.password;
             password_entry.entry.set_visibility (false);
-            totp_entry.text = cipher.totp != null ? cipher.totp : "";
-            if (cipher.totp != null) {
-                otp_panel.set_key (cipher.totp);
-                otp_panel.set_no_show_all (false);
-                otp_panel.show_all();
-            } else {
-                otp_panel.hide ();
-            }
         }
     }
 }

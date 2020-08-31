@@ -4,8 +4,8 @@ using Gee;
 
 namespace App.Widgets {
     public class Sidebar : Granite.Widgets.SourceList {
-        private static Granite.Widgets.SourceList.ExpandableItem types_root;
-        private static Granite.Widgets.SourceList.ExpandableItem folders_parent;
+        private Granite.Widgets.SourceList.ExpandableItem types_root;
+        private Granite.Widgets.SourceList.ExpandableItem folders_parent;
         public Folder all_passwords;
         public Folder all_notes;
 
@@ -52,7 +52,6 @@ namespace App.Widgets {
 
         private void init_folders_list() {
             folders_parent.clear();
-            folders_parent.add (all_passwords);
 
             foreach (Folder folder in App.State.get_instance ().folders.values) {
                 folders_parent.add (folder);

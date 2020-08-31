@@ -16,7 +16,6 @@ namespace App.Widgets {
             column_homogeneous = false;
             set_vexpand (false);
             set_hexpand (false);
-            margin_top = 14;
 
             timestep = 30;
             GLib.Timeout.add_seconds (1, timer);
