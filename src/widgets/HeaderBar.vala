@@ -38,6 +38,12 @@ namespace App.Widgets {
          * @see icon_settings
          */
         public HeaderBar () {
+            var image_search = new Gtk.Image.from_icon_name("edit-find-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+            var search_button = new Gtk.ToggleButton();
+            search_button.set_image(image_search);
+            search_button.set_active(true);
+            search_button.clicked.connect(() => { App.State.get_instance ().is_search_toogled = search_button.get_active(); });
+
             var stack = new Gtk.Stack();
             stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             stack.set_transition_duration(1000);
@@ -53,6 +59,7 @@ namespace App.Widgets {
 
             this.set_custom_title(views);
 
+            this.pack_end(search_button);
             this.show_close_button = true;
             this.has_subtitle = false;
         }

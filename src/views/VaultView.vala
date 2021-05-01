@@ -48,15 +48,26 @@ class App.Views.VaultView: Gtk.Paned {
         var search_bar = new Gtk.SearchBar();
         var search_entry = new Gtk.SearchEntry();
         search_entry.width_chars = 28;
-        search_entry.tooltip_text = _("Search all mail in account for keywords (Ctrl+S)");
-        search_entry.has_focus = true;
-        search_entry.show();
+        search_entry.tooltip_text = _("Search all");
         
 
         search_bar.add(search_entry);
+        search_bar.show_all();
+        search_bar.connect_entry(search_entry);
+        search_bar.set_search_mode(true);
+        App.State.get_instance ().notify["is_search_toogled"].connect((obj, val) => {
+            if (((State)obj).is_search_toogled == true) {
+                search_bar.show_all();
+            } else {
+                search_bar.hide();
+            }
+        });
+
+
+        search_entry.has_focus = true;
         this.pack1(search_bar, false, false);
         this.pack2(content_view, true, true);
-        this.position = (150);
+        
     }
 
     private void initialize_chipher_list_by_folder (Folder item, CipherList cipher_list) {
