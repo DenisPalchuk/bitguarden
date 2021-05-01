@@ -15,6 +15,8 @@ class App.Views.VaultView: Gtk.Paned {
             warning("Error during syncing folders with state: %s", error.message);
         }
 
+
+        var content_view = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
     
         child_panel = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
         
@@ -38,9 +40,22 @@ class App.Views.VaultView: Gtk.Paned {
         App.State.get_instance ().notify["search-text"].connect((obj, val) => {
             cipher_list.filter_by_string(((App.State)(obj)).search_text);
         });
+        
 
-        this.pack1 (sidebar, false, false);
-        this.pack2 (child_panel, true, false);
+        content_view.pack1 (sidebar, false, false);
+        content_view.pack2 (child_panel, true, false);
+
+        var search_bar = new Gtk.SearchBar();
+        var search_entry = new Gtk.SearchEntry();
+        search_entry.width_chars = 28;
+        search_entry.tooltip_text = _("Search all mail in account for keywords (Ctrl+S)");
+        search_entry.has_focus = true;
+        search_entry.show();
+        
+
+        search_bar.add(search_entry);
+        this.pack1(search_bar, false, false);
+        this.pack2(content_view, true, true);
         this.position = (150);
     }
 
