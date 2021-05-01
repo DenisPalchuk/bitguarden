@@ -47,7 +47,7 @@ public class App.Views.AppView : Gtk.Box {
     }
 
     private void show_vault() {
-        var vault_view = new App.Views.VaultView(Gtk.Orientation.HORIZONTAL);
+        var vault_view = new App.Views.VaultView(Gtk.Orientation.VERTICAL);
         this.add (vault_view);
         this.currentWidget = vault_view;
         this.show_all ();

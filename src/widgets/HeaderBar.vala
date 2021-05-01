@@ -38,27 +38,30 @@ namespace App.Widgets {
          * @see icon_settings
          */
         public HeaderBar () {
+            var image_search = new Gtk.Image.from_icon_name("edit-find-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+            var search_button = new Gtk.ToggleButton();
+            search_button.set_image(image_search);
+            search_button.set_active(true);
+            search_button.clicked.connect(() => { App.State.get_instance ().is_search_toogled = search_button.get_active(); });
 
-            var search_entry = new Gtk.SearchEntry();
-            search_entry.set_no_show_all(true);
-            search_entry.hide();
+            var stack = new Gtk.Stack();
+            stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+            stack.set_transition_duration(1000);
             
-            search_entry.search_changed.connect(() => {
-                App.State.get_instance ().search_text = search_entry.get_text().chomp();
-            });
+            var paswords_button = new Gtk.CheckButton.with_label("Passwords");
+            stack.add_titled(paswords_button, "passowords", "Passwords");
+            var secure_notes = new Gtk.CheckButton.with_label("Secure notes");
+            stack.add_titled(secure_notes, "notes", "Secure notes");
+            
+            
+            var views = new Gtk.StackSwitcher();
+            views.set_stack(stack);
 
-            App.State.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
-                if (((State)obj).is_vault_unlocked == true) {
-                    search_entry.set_no_show_all (false);
-                    search_entry.show_all();
-                    search_entry.grab_focus();
-                }
-            });
+            this.set_custom_title(views);
 
-            this.set_title ("Bitguarden");
+            this.pack_end(search_button);
             this.show_close_button = true;
             this.has_subtitle = false;
-            this.pack_end (search_entry);
         }
     }
 }
