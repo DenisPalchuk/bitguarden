@@ -42,22 +42,35 @@ namespace App.Widgets {
             var search_button = new Gtk.ToggleButton();
             search_button.set_image(image_search);
             search_button.set_active(true);
-            search_button.clicked.connect(() => { App.State.get_instance ().is_search_toogled = search_button.get_active(); });
+            search_button.set_no_show_all(true);
+            search_button.hide();
+            search_button.clicked.connect(() => {
+                App.State.get_instance ().is_search_toogled = search_button.get_active();                info (App.State.get_instance ().is_search_toogled.to_string());
+            });
 
-            var stack = new Gtk.Stack();
-            stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
-            stack.set_transition_duration(1000);
+            // TODO: add stackswitcher when will move from folders and deal with services
+            //  var stack = new Gtk.Stack();
+            //  stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+            //  stack.set_transition_duration(1000);
             
-            var paswords_button = new Gtk.CheckButton.with_label("Passwords");
-            stack.add_titled(paswords_button, "passowords", "Passwords");
-            var secure_notes = new Gtk.CheckButton.with_label("Secure notes");
-            stack.add_titled(secure_notes, "notes", "Secure notes");
+            //  var paswords_button = new Gtk.CheckButton.with_label("Passwords");
+            //  stack.add_titled(paswords_button, "passowords", "Passwords");
+            //  var secure_notes = new Gtk.CheckButton.with_label("Secure notes");
+            //  stack.add_titled(secure_notes, "notes", "Secure notes");
             
             
-            var views = new Gtk.StackSwitcher();
-            views.set_stack(stack);
+            //  var views = new Gtk.StackSwitcher();
+            //  views.set_stack(stack);
+            //  this.set_custom_title(views);
 
-            this.set_custom_title(views);
+            this.set_title ("Bitguarden");
+
+            App.State.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
+                if (((State)obj).is_vault_unlocked == true) {
+                    search_button.set_no_show_all (false);
+                    search_button.show_all();
+                }
+            });
 
             this.pack_end(search_button);
             this.show_close_button = true;

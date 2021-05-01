@@ -47,24 +47,34 @@ class App.Views.VaultView: Gtk.Paned {
 
         var search_bar = new Gtk.SearchBar();
         var search_entry = new Gtk.SearchEntry();
+        // TODO: remove this hell with general store and wrap store by services
+        search_entry.search_changed.connect(() => {
+            App.State.get_instance ().search_text = search_entry.get_text().chomp();
+        });
         search_entry.width_chars = 28;
         search_entry.tooltip_text = _("Search all");
-        
 
         search_bar.add(search_entry);
         search_bar.show_all();
         search_bar.connect_entry(search_entry);
         search_bar.set_search_mode(true);
-        App.State.get_instance ().notify["is_search_toogled"].connect((obj, val) => {
+
+        App.State.get_instance ().notify["is-search-toogled"].connect((obj, val) => {
             if (((State)obj).is_search_toogled == true) {
                 search_bar.show_all();
+                search_entry.grab_focus();
             } else {
                 search_bar.hide();
             }
         });
 
+        /* need to focus on search entry when vault is unlocked */
+        App.State.get_instance ().notify["is-vault-unlocked"].connect((obj, val) => {
+            if (((State)obj).is_vault_unlocked == true) {
+                search_entry.grab_focus();
+            }
+        });
 
-        search_entry.has_focus = true;
         this.pack1(search_bar, false, false);
         this.pack2(content_view, true, true);
         
